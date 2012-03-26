@@ -15,7 +15,7 @@ D2BlockUpdater::~D2BlockUpdater()
 void D2BlockUpdater::UpdateIgnoreList()
 {
 	if (IgnoreListIsOutOfDate())
-		UpdateIgnoreList();
+		UpdateIgnoreListFile();
 
 	emit UpdaterComplete();
 }
