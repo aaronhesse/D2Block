@@ -19,7 +19,7 @@ private:
 	int LaunchDiablo2() const;
 
 public slots:
-	void HandleUpdaterComplete();
+	void on_updateComplete();
 
 public:
 	D2BlockApplication(int argc, char *argv[]);

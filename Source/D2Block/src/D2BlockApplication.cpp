@@ -30,7 +30,7 @@ void D2BlockApplication::ProcessCommandlineArguments(int argc, char *argv[])
 	passThroughCommandlineArguments.chop(1);
 }
 
-void D2BlockApplication::HandleUpdaterComplete()
+void D2BlockApplication::on_updateComplete()
 {
 	// set OK button text to (3) ... (2) ... (1)
 	LaunchDiablo2();
