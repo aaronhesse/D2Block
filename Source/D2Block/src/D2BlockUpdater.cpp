@@ -2,13 +2,7 @@
 #include "D2BlockUpdater.h"
 #include "D2BlockDownloader.h"
 
-const QString D2BlockUpdater::d2BlockRegPath               = "Software\\D2Block\\";
-const QString D2BlockUpdater::d2BlockRegKeyServer          = "Server";
-const QString D2BlockUpdater::d2BlockRegKeyUpdateFile      = "Update File";
-const QString D2BlockUpdater::d2BlockRegKeyIgnorelistFile  = "Ignorelist File";
-const QString D2BlockUpdater::d2BlockRegKeyCurrentRevision = "Current Revision";
-
-D2BlockUpdater::D2BlockUpdater(int argc, char* argv[]):
+D2BlockUpdater::D2BlockUpdater():
 currentRevision(0),
 ignoreListOutOfDate(false)
 {
@@ -21,31 +15,19 @@ D2BlockUpdater::~D2BlockUpdater()
 void D2BlockUpdater::UpdateIgnoreList()
 {
 	if (IgnoreListIsOutOfDate())
-		UpdateIgnoreListFile();
+		UpdateIgnoreList();
 
 	emit UpdaterComplete();
 }
 
 void D2BlockUpdater::ProcessRegistryInformation()
 {
-	HKEY key;
-	DWORD bytesRead;
+	QSettings settings("D2Block", "D2Block");
 
-	RegOpenKeyEx(HKEY_LOCAL_MACHINE, d2BlockRegPath.toAscii(), 0, KEY_ALL_ACCESS  | KEY_WOW64_32KEY, &key);
-
-	bytesRead = sizeof(httpServer);
-	RegGetValue(key, NULL, d2BlockRegKeyServer.toAscii(), RRF_RT_REG_SZ, NULL, httpServer.data(), &bytesRead);
-
-	bytesRead = sizeof(updateFile);
-	RegGetValue(key, NULL, d2BlockRegKeyUpdateFile.toAscii(), RRF_RT_REG_SZ, NULL, updateFile.data(), &bytesRead);
-
-	bytesRead = sizeof(ignorelistFile);
-	RegGetValue(key, NULL, d2BlockRegKeyIgnorelistFile.toAscii(), RRF_RT_REG_SZ, NULL, ignorelistFile.data(), &bytesRead);
-
-	bytesRead = sizeof(currentRevision);
-	RegGetValue(key, NULL, d2BlockRegKeyCurrentRevision.toAscii(), RRF_RT_REG_DWORD, NULL, &currentRevision, &bytesRead);
-
-	RegCloseKey(key);
+	httpServer = settings.value("Server").toString();
+ 	updateFile = settings.value("Update File").toString();
+ 	ignorelistFile = settings.value("Ignorelist File").toString();
+ 	currentRevision = settings.value("Current Revision").toInt();
 }
 
 void D2BlockUpdater::ProcessVersionFile()

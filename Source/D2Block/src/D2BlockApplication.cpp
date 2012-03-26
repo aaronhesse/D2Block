@@ -40,8 +40,10 @@ void D2BlockApplication::HandleUpdaterComplete()
 int D2BlockApplication::LaunchDiablo2() const
 {
 	QString executablePath;
-	GetCurrentDirectory(MAX_PATH, (LPSTR)executablePath.data());
+	GetCurrentDirectory(MAX_PATH, (LPSTR)executablePath.data()); // use QCoreApplication getApplicationDirectory?
 	executablePath.sprintf("%s\\%s", executablePath, diablo2Executable);
 
-	return (int)ShellExecute(NULL, "open", executablePath.toAscii(), passThroughCommandlineArguments.toAscii(), NULL, SW_SHOW);
+	//return (int)ShellExecute(NULL, "open", executablePath.toAscii(), passThroughCommandlineArguments.toAscii(), NULL, SW_SHOW);
+	// use QDesktopServices
+	return 0;
 }

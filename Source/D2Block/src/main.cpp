@@ -3,6 +3,8 @@
 #include "D2BlockApplication.h"
 #include "D2BlockUpdater.h"
 
+static void primaryWorkerThreadFunc(D2BlockApplication* app);
+
 int main(int argc, char *argv[])
 {
 	D2BlockApplication app(argc, argv);
@@ -10,12 +12,16 @@ int main(int argc, char *argv[])
 
 	win.ShowWindow();
 
-	QThread workerThread;
-	D2BlockUpdater updater(argc, argv);
-	updater.moveToThread(&workerThread);
-	QObject::connect(&workerThread, SIGNAL(started()), &updater, SLOT(UpdateIgnoreList()), Qt::QueuedConnection);
-	QObject::connect(&updater, SIGNAL(UpdaterComplete()), &app, SLOT(HandleUpdaterComplete()), Qt::QueuedConnection);
-	workerThread.start();
+	QtConcurrent::run(primaryWorkerThreadFunc, &app);
 	
 	return app.exec();
+}
+
+static void primaryWorkerThreadFunc(D2BlockApplication* app)
+{
+	D2BlockUpdater updater;
+
+	QObject::connect(&updater, SIGNAL(UpdaterComplete()), app, SLOT(on_updateComplete()));
+
+	updater.UpdateIgnoreList();
 }

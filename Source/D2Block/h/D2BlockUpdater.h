@@ -11,12 +11,6 @@ class D2BlockUpdater : public QObject
 
 private:
 
-	static const QString d2BlockRegPath;
-	static const QString d2BlockRegKeyServer;
-	static const QString d2BlockRegKeyUpdateFile;
-	static const QString d2BlockRegKeyIgnorelistFile;
-	static const QString d2BlockRegKeyCurrentRevision;
-
 	QString url;
 	QString httpServer;
 	QString updateFile;
@@ -40,6 +34,6 @@ public slots:
 
 public:
 
-	D2BlockUpdater(int argc, char* argv[]);
+	D2BlockUpdater();
 	~D2BlockUpdater();
 };
