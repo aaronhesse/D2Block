@@ -15,6 +15,28 @@ D2BlockDownloader::~D2BlockDownloader(void)
 	m_netManager = nullptr;
 }
 
+bool D2BlockDownloader::DownloadFileToDisk(const QString& url, const QString& pathOnDisk)
+{
+	bool retVal = false;
+
+	QByteArray fileData = DownloadFile(url);
+
+	QFile* file = new QFile(pathOnDisk);
+
+	if (file->open(QIODevice::WriteOnly))
+	{
+		if (file->write(fileData))
+			retVal = true;
+
+		file->close();
+	}
+
+	delete file;
+	file = nullptr;
+
+	return retVal;
+}
+
 QByteArray D2BlockDownloader::DownloadFile(const QString& url)
 {
 	QNetworkRequest request(url);

@@ -4,6 +4,7 @@
 
 D2BlockUpdater::D2BlockUpdater():
 m_localRevision(0),
+m_remoteRevision(0),
 m_ignoreListOutOfDate(false)
 {
 }
@@ -36,8 +37,9 @@ void D2BlockUpdater::ProcessVersionFile()
 
 	D2BlockDownloader downloader;
 	QByteArray fileData = downloader.DownloadFile(m_url);
+	m_remoteRevision = atoi(fileData);
 
-	if (atoi(fileData) > m_localRevision)
+	if (m_remoteRevision > m_localRevision)
 		m_ignoreListOutOfDate = true;
 }
 
@@ -56,45 +58,28 @@ void D2BlockUpdater::UpdateIgnoreListFile()
 		BackupIgnoreListFile();
 		MergeIgnoreLists();
 		UpdateRevisionNumber();
+
 		m_ignoreListOutOfDate = false;
 	}
 
 	m_ignoreListOutOfDate = true;
 }
 
-bool D2BlockUpdater::DownloadUpdatedIgnoreListFile()
+bool D2BlockUpdater::DownloadUpdatedIgnoreListFile() const
 {
-	// download Ignorelist from web server to d2root/ignorelist.update
-	// If we fail to download it, just silently fail. We don't want
-	// any of the UI to block or be annoying.
-
 	QString url = QString("http://%1/%2").arg(m_httpServer).arg(m_ignorelistFile);
-
-	D2BlockDownloader downloader;
-	QByteArray fileData = downloader.DownloadFile(url);
-
 	QString ignorelistUpdateFilePath = m_gamePath + "/" + "ignorelist.update";
 
-	QFile* file = new QFile(m_updateFile);
-	if (!file->open(QIODevice::WriteOnly))
-	{
-		delete file;
-		file = nullptr;
-		return false;
-	}
-
-	file->write(fileData);
-	file->close();
-
-	return true;
+	D2BlockDownloader downloader;
+	return downloader.DownloadFileToDisk(url, ignorelistUpdateFilePath);
 }
 
-void D2BlockUpdater::BackupIgnoreListFile()
+void D2BlockUpdater::BackupIgnoreListFile() const
 {
-	// copy user ignorelist to 'ignorelist.bak'
+	QFile::rename(m_gamePath + "ignorelist", m_gamePath + "ignorelist.bak");
 }
 
-void D2BlockUpdater::MergeIgnoreLists()
+void D2BlockUpdater::MergeIgnoreLists() const
 {
 	// open ignorelist.bak
 	// parse file for "!**D2BLOCK BEGIN**" header
@@ -102,10 +87,11 @@ void D2BlockUpdater::MergeIgnoreLists()
 	// parse file for "!**D2BLOCK END**" footer
 	// save any lines below this.
 	// append any saved lines to the end of ignorelist.update
-	// rename ignorelist.update to 'ignorelist'
+    QFile::rename(m_gamePath + "ignorelist.update", m_gamePath + "/" + "ignorelist");
 }
 
-void D2BlockUpdater::UpdateRevisionNumber()
+void D2BlockUpdater::UpdateRevisionNumber() const
 {
-	// if everything is successful, set regkey for current revision
+	QSettings settings;
+	settings.setValue("Revision", m_remoteRevision);
 }

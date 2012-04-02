@@ -11,15 +11,15 @@ private:
 	char** argumentValues;
 
 	static const size_t maxGameArgumentLength = 64;
-	static const QString diablo2Executable;
+	static const QString m_diablo2Executable;
 
-	QString passThroughCommandlineArguments;
+	QString m_passThroughCommandlineArguments;
 
 	void ProcessCommandlineArguments(int argc, char *argv[]);
 	bool LaunchDiablo2() const;
 
-	public slots:
-		void on_updateComplete();
+public slots:
+	void on_updateComplete();
 
 public:
 	D2BlockApplication(int argc, char *argv[]);

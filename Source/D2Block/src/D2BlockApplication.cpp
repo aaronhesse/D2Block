@@ -2,7 +2,7 @@
 #include "D2BlockApplication.h"
 #include "D2BlockUpdater.h"
 
-const QString D2BlockApplication::diablo2Executable = "Diablo II.exe";
+const QString D2BlockApplication::m_diablo2Executable = "Diablo II.exe";
 
 D2BlockApplication::D2BlockApplication(int argc, char *argv[]):
 QApplication(argc, argv)
@@ -24,10 +24,10 @@ void D2BlockApplication::ProcessCommandlineArguments(int argc, char *argv[])
 	// Make sure to chop off the final excess space at the end.
 	for(int i = 1; i < argumentCount; i++)
 	{
-		passThroughCommandlineArguments.append(argumentValues[i] + QString(" "));
+		m_passThroughCommandlineArguments.append(argumentValues[i] + QString(" "));
 	}
 
-	passThroughCommandlineArguments.chop(1);
+	m_passThroughCommandlineArguments.chop(1);
 }
 
 void D2BlockApplication::on_updateComplete()
@@ -40,6 +40,6 @@ void D2BlockApplication::on_updateComplete()
 bool D2BlockApplication::LaunchDiablo2() const
 {
 	QString executablePath = QCoreApplication::applicationDirPath();
-	executablePath.sprintf("%s\\%s", executablePath, diablo2Executable);
+	executablePath.sprintf("%s\\%s", executablePath, m_diablo2Executable);
 	return QDesktopServices::openUrl(executablePath);
 }

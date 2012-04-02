@@ -18,6 +18,7 @@ private:
 	QString m_gamePath;
 
 	qint32 m_localRevision;
+	qint32 m_remoteRevision;
 
 	bool m_ignoreListOutOfDate;
 
@@ -25,10 +26,10 @@ private:
 	void ProcessVersionFile();
 	bool IgnoreListIsOutOfDate();
 	void UpdateIgnoreListFile();
-	bool DownloadUpdatedIgnoreListFile();
-	void BackupIgnoreListFile();
-	void MergeIgnoreLists();
-	void UpdateRevisionNumber();
+	bool DownloadUpdatedIgnoreListFile() const;
+	void BackupIgnoreListFile() const;
+	void MergeIgnoreLists() const;
+	void UpdateRevisionNumber() const;
 
 signals:
 	void UpdaterComplete();
