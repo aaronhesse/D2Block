@@ -11,20 +11,24 @@ class D2BlockUpdater : public QObject
 
 private:
 
-	QString url;
-	QString httpServer;
-	QString updateFile;
-	QString ignorelistFile;
-	int currentRevision;
+	QString m_url;
+	QString m_httpServer;
+	QString m_updateFile;
+	QString m_ignorelistFile;
+	QString m_gamePath;
 
-	bool ignoreListOutOfDate;
+	qint32 m_localRevision;
 
-	QFile* file;
+	bool m_ignoreListOutOfDate;
 
 	void ProcessRegistryInformation();
 	void ProcessVersionFile();
 	bool IgnoreListIsOutOfDate();
 	void UpdateIgnoreListFile();
+	bool DownloadUpdatedIgnoreListFile();
+	void BackupIgnoreListFile();
+	void MergeIgnoreLists();
+	void UpdateRevisionNumber();
 
 signals:
 	void UpdaterComplete();

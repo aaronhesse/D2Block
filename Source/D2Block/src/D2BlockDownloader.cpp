@@ -4,24 +4,33 @@
 
 D2BlockDownloader::D2BlockDownloader(void)
 {
-	netManager = new QNetworkAccessManager(this);
-}
+	m_netManager = new QNetworkAccessManager(this);
 
+	QObject::connect(m_netManager, SIGNAL(finished(QNetworkReply*)), this, SLOT(on_downloadFinished(QNetworkReply*)));
+}
 
 D2BlockDownloader::~D2BlockDownloader(void)
 {
-	delete netManager;
-	netManager = nullptr;
+	delete m_netManager;
+	m_netManager = nullptr;
 }
 
-void D2BlockDownloader::DownloadFile(const QString url, QByteArray* replyData, qint64 dataSize)
-{	
-	QNetworkReply* reply = netManager->get(QNetworkRequest(QUrl(url)));
+QByteArray D2BlockDownloader::DownloadFile(const QString& url)
+{
+	QNetworkRequest request(url);
+	QNetworkReply* reply = m_netManager->get(request);
 
 	// Block until the reply/download is complete.
-	while(!reply->isFinished())
-		Sleep(1);
+	QEventLoop loop;
+	connect(reply, SIGNAL(finished()), &loop, SLOT(quit()));
+	loop.exec();
 
-	replyData = &reply->readAll(); // if there's a problem with this, perform a memcpy. we don't know the lifetime of this data.
-	dataSize = reply->readBufferSize();
+	delete reply;
+
+	return m_replyData;
+}
+
+void D2BlockDownloader::on_downloadFinished(QNetworkReply* data)
+{
+	m_replyData = data->readAll();
 }

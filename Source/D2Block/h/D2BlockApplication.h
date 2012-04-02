@@ -16,10 +16,10 @@ private:
 	QString passThroughCommandlineArguments;
 
 	void ProcessCommandlineArguments(int argc, char *argv[]);
-	int LaunchDiablo2() const;
+	bool LaunchDiablo2() const;
 
-public slots:
-	void on_updateComplete();
+	public slots:
+		void on_updateComplete();
 
 public:
 	D2BlockApplication(int argc, char *argv[]);

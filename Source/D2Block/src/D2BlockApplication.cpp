@@ -24,9 +24,9 @@ void D2BlockApplication::ProcessCommandlineArguments(int argc, char *argv[])
 	// Make sure to chop off the final excess space at the end.
 	for(int i = 1; i < argumentCount; i++)
 	{
-		passThroughCommandlineArguments.append(argumentValues[i]);
-		passThroughCommandlineArguments.append(" ");
+		passThroughCommandlineArguments.append(argumentValues[i] + QString(" "));
 	}
+
 	passThroughCommandlineArguments.chop(1);
 }
 
@@ -37,13 +37,9 @@ void D2BlockApplication::on_updateComplete()
 	exit();
 }
 
-int D2BlockApplication::LaunchDiablo2() const
+bool D2BlockApplication::LaunchDiablo2() const
 {
-	QString executablePath;
-	GetCurrentDirectory(MAX_PATH, (LPSTR)executablePath.data()); // use QCoreApplication getApplicationDirectory?
+	QString executablePath = QCoreApplication::applicationDirPath();
 	executablePath.sprintf("%s\\%s", executablePath, diablo2Executable);
-
-	//return (int)ShellExecute(NULL, "open", executablePath.toAscii(), passThroughCommandlineArguments.toAscii(), NULL, SW_SHOW);
-	// use QDesktopServices
-	return 0;
+	return QDesktopServices::openUrl(executablePath);
 }
