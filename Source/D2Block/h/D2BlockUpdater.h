@@ -1,21 +1,28 @@
-#include <QObject>
-#include <QFile>
+#pragma once
 
-const size_t maxFilenameLength = 32;
-const size_t maxWebserverAddressLength = 64;
-const size_t maxUrlLength = maxWebserverAddressLength + maxFilenameLength;
+#include <QObject>
 
 class D2BlockUpdater : public QObject
 {
 	Q_OBJECT
 
+public:
+
+	D2BlockUpdater();
+	~D2BlockUpdater();
+
+public slots:
+	void UpdateIgnoreList();
+
 private:
 
-	QString m_url;
+	QString m_gamePath;
 	QString m_httpServer;
 	QString m_updateFile;
 	QString m_ignorelistFile;
-	QString m_gamePath;
+
+	static const QString m_ignorelistBakFile;
+	static const QString m_ignorelistUpdatedFile;
 
 	qint32 m_localRevision;
 	qint32 m_remoteRevision;
@@ -26,19 +33,12 @@ private:
 	void ProcessVersionFile();
 	bool IgnoreListIsOutOfDate();
 	void UpdateIgnoreListFile();
+
 	bool DownloadUpdatedIgnoreListFile() const;
 	void BackupIgnoreListFile() const;
-	void MergeIgnoreLists() const;
+	bool MergeIgnoreLists() const;
 	void UpdateRevisionNumber() const;
 
 signals:
 	void UpdaterComplete();
-
-public slots:
-	void UpdateIgnoreList();
-
-public:
-
-	D2BlockUpdater();
-	~D2BlockUpdater();
 };

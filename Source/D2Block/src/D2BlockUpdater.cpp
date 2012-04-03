@@ -2,6 +2,9 @@
 #include "D2BlockUpdater.h"
 #include "D2BlockDownloader.h"
 
+const QString D2BlockUpdater::m_ignorelistBakFile = "ignorelist.bak";
+const QString D2BlockUpdater::m_ignorelistUpdatedFile = "ignorelist.updated";
+
 D2BlockUpdater::D2BlockUpdater():
 m_localRevision(0),
 m_remoteRevision(0),
@@ -33,10 +36,10 @@ void D2BlockUpdater::ProcessRegistryInformation()
 
 void D2BlockUpdater::ProcessVersionFile()
 {
-	m_url = QString("http://%1/%2").arg(m_httpServer).arg(m_updateFile);
+	QString url = QString("http://%1/%2").arg(m_httpServer).arg(m_updateFile);
 
 	D2BlockDownloader downloader;
-	QByteArray fileData = downloader.DownloadFile(m_url);
+	QByteArray fileData = downloader.DownloadFile(url);
 	m_remoteRevision = atoi(fileData);
 
 	if (m_remoteRevision > m_localRevision)
@@ -60,6 +63,7 @@ void D2BlockUpdater::UpdateIgnoreListFile()
 		UpdateRevisionNumber();
 
 		m_ignoreListOutOfDate = false;
+		return;
 	}
 
 	m_ignoreListOutOfDate = true;
@@ -68,26 +72,58 @@ void D2BlockUpdater::UpdateIgnoreListFile()
 bool D2BlockUpdater::DownloadUpdatedIgnoreListFile() const
 {
 	QString url = QString("http://%1/%2").arg(m_httpServer).arg(m_ignorelistFile);
-	QString ignorelistUpdateFilePath = m_gamePath + "/" + "ignorelist.update";
+	QString ignoreListUpdateFilePath = m_gamePath + "/" + m_ignorelistUpdatedFile;
 
 	D2BlockDownloader downloader;
-	return downloader.DownloadFileToDisk(url, ignorelistUpdateFilePath);
+	return downloader.DownloadFileToDisk(url, ignoreListUpdateFilePath);
 }
 
 void D2BlockUpdater::BackupIgnoreListFile() const
 {
-	QFile::rename(m_gamePath + "ignorelist", m_gamePath + "ignorelist.bak");
+	QFile::copy(m_gamePath + m_ignorelistFile, m_gamePath + m_ignorelistBakFile);
 }
 
-void D2BlockUpdater::MergeIgnoreLists() const
+bool D2BlockUpdater::MergeIgnoreLists() const
 {
-	// open ignorelist.bak
-	// parse file for "!**D2BLOCK BEGIN**" header
-	// save any lines above this.
-	// parse file for "!**D2BLOCK END**" footer
-	// save any lines below this.
-	// append any saved lines to the end of ignorelist.update
-    QFile::rename(m_gamePath + "ignorelist.update", m_gamePath + "/" + "ignorelist");
+	QFile bakFile(m_gamePath + "/" + m_ignorelistBakFile);
+	if(!bakFile.open(QIODevice::ReadOnly | QIODevice::Text))
+		return false;
+
+	// Look for the sections of the file to ignore. Grab all of the other lines.
+
+	bool ignoreLines = false;
+	QStringList userIgnoreListData;
+
+	while (!bakFile.atEnd()) {
+		QByteArray line = bakFile.readLine();
+
+		if (line.contains("!**D2BLOCK BEGIN**"))
+			ignoreLines = true;
+		else if (line.contains("!**D2BLOCK END**"))
+			ignoreLines = false;
+
+		if (!ignoreLines)
+			userIgnoreListData.push_back(line);
+	}
+
+	bakFile.close();
+
+	// Then add all the user sections of the file to the updated file.
+	QFile updateFile(m_gamePath + "/" + m_ignorelistUpdatedFile);
+	if(!updateFile.open(QIODevice::Append | QIODevice::Text))
+		return false;
+
+	foreach(QString entry, userIgnoreListData)
+	{
+		updateFile.write(entry.toAscii());
+	}
+
+	updateFile.close();
+
+	QFile::remove(m_gamePath + m_ignorelistFile);
+    QFile::rename(m_gamePath + m_ignorelistUpdatedFile, m_gamePath + "/" + m_ignorelistFile);
+
+	return true;
 }
 
 void D2BlockUpdater::UpdateRevisionNumber() const
