@@ -59,11 +59,12 @@ void D2BlockUpdater::UpdateIgnoreListFile()
 	if (DownloadUpdatedIgnoreListFile())
 	{
 		BackupIgnoreListFile();
-		MergeIgnoreLists();
-		UpdateRevisionNumber();
-
-		m_ignoreListOutOfDate = false;
-		return;
+		if (MergeIgnoreLists())
+		{
+			UpdateRevisionNumber();
+			m_ignoreListOutOfDate = false;
+			return;
+		}
 	}
 
 	m_ignoreListOutOfDate = true;
