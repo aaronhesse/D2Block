@@ -14,6 +14,10 @@ public:
 
 	void ShowWindow();
 
+public slots:
+	void on_setProgressBar(qint32 value);
+	void on_updateProgressBar(qint32 amount);
+
 private:
 	Ui::D2BlockClass ui;
 };

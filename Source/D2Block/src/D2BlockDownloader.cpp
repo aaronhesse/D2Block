@@ -1,7 +1,6 @@
 #include "StdAfx.h"
 #include "D2BlockDownloader.h"
 
-
 D2BlockDownloader::D2BlockDownloader(void)
 {
 	m_netManager = new QNetworkAccessManager(this);

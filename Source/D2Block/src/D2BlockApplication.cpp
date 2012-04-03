@@ -1,6 +1,5 @@
 #include "StdAfx.h"
 #include "D2BlockApplication.h"
-#include "D2BlockUpdater.h"
 
 const QString D2BlockApplication::m_diablo2Executable = "Diablo II.exe";
 
@@ -19,27 +18,25 @@ void D2BlockApplication::ProcessCommandlineArguments(int argc, char *argv[])
 	argumentCount = argc;
 	argumentValues = argv;
 
-	// Iterate over the pass-through command-line arguments, store them in a class member
+	// Iterate over the pass-through command-line arguments, store them in a class member QStringList
 	// Skip the first argument though because that's the fully qualified path of this process.
-	// Make sure to chop off the final excess space at the end.
 	for(int i = 1; i < argumentCount; i++)
 	{
-		m_passThroughCommandlineArguments.append(argumentValues[i] + QString(" "));
+		m_passThroughCommandlineArguments.push_back(argumentValues[i]);
 	}
-
-	m_passThroughCommandlineArguments.chop(1);
 }
 
 void D2BlockApplication::on_updateComplete()
 {
-	// set OK button text to (3) ... (2) ... (1)
+	emit setProgressBar(100);
 	LaunchDiablo2();
 	exit();
 }
 
-bool D2BlockApplication::LaunchDiablo2() const
+void D2BlockApplication::LaunchDiablo2() const
 {
+	QProcess gameProcess;
 	QString executablePath = QCoreApplication::applicationDirPath();
 	executablePath.sprintf("%s\\%s", executablePath, m_diablo2Executable);
-	return QDesktopServices::openUrl(executablePath);
+	gameProcess.start(m_diablo2Executable, m_passThroughCommandlineArguments);
 }

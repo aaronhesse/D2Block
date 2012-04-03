@@ -41,4 +41,5 @@ private:
 
 signals:
 	void UpdaterComplete();
+	void updateProgressBar(qint32 amount) const;
 };

@@ -27,11 +27,16 @@ void D2BlockUpdater::UpdateIgnoreList()
 void D2BlockUpdater::ProcessRegistryInformation()
 {
 	QSettings settings("D2Block", "D2Block");
+	QSettings gameSettings("Blizzard Entertainment", "Diablo II");
 
 	m_httpServer = settings.value("Server").toString();
  	m_updateFile = settings.value("Update File").toString();
  	m_ignorelistFile = settings.value("Ignorelist File").toString();
- 	m_localRevision = settings.value("Current Revision").toInt();
+ 	m_localRevision = settings.value("Local Revision").toInt();
+
+	m_gamePath = gameSettings.value("InstallPath").toString();
+
+	emit updateProgressBar(20);
 }
 
 void D2BlockUpdater::ProcessVersionFile()
@@ -44,6 +49,8 @@ void D2BlockUpdater::ProcessVersionFile()
 
 	if (m_remoteRevision > m_localRevision)
 		m_ignoreListOutOfDate = true;
+
+	emit updateProgressBar(20);
 }
 
 bool D2BlockUpdater::IgnoreListIsOutOfDate()
@@ -73,10 +80,12 @@ void D2BlockUpdater::UpdateIgnoreListFile()
 bool D2BlockUpdater::DownloadUpdatedIgnoreListFile() const
 {
 	QString url = QString("http://%1/%2").arg(m_httpServer).arg(m_ignorelistFile);
-	QString ignoreListUpdateFilePath = m_gamePath + "/" + m_ignorelistUpdatedFile;
+	QString ignoreListUpdateFilePath = m_gamePath + m_ignorelistUpdatedFile;
 
 	D2BlockDownloader downloader;
-	return downloader.DownloadFileToDisk(url, ignoreListUpdateFilePath);
+	bool success = downloader.DownloadFileToDisk(url, ignoreListUpdateFilePath);
+	emit updateProgressBar(30);
+	return success;
 }
 
 void D2BlockUpdater::BackupIgnoreListFile() const
@@ -86,7 +95,7 @@ void D2BlockUpdater::BackupIgnoreListFile() const
 
 bool D2BlockUpdater::MergeIgnoreLists() const
 {
-	QFile bakFile(m_gamePath + "/" + m_ignorelistBakFile);
+	QFile bakFile(m_gamePath + m_ignorelistBakFile);
 	if(!bakFile.open(QIODevice::ReadOnly | QIODevice::Text))
 		return false;
 
@@ -101,7 +110,10 @@ bool D2BlockUpdater::MergeIgnoreLists() const
 		if (line.contains("!**D2BLOCK BEGIN**"))
 			ignoreLines = true;
 		else if (line.contains("!**D2BLOCK END**"))
+		{
 			ignoreLines = false;
+			continue;
+		}
 
 		if (!ignoreLines)
 			userIgnoreListData.push_back(line);
@@ -110,10 +122,11 @@ bool D2BlockUpdater::MergeIgnoreLists() const
 	bakFile.close();
 
 	// Then add all the user sections of the file to the updated file.
-	QFile updateFile(m_gamePath + "/" + m_ignorelistUpdatedFile);
+	QFile updateFile(m_gamePath + m_ignorelistUpdatedFile);
 	if(!updateFile.open(QIODevice::Append | QIODevice::Text))
 		return false;
 
+	updateFile.write("\n");
 	foreach(QString entry, userIgnoreListData)
 	{
 		updateFile.write(entry.toAscii());
@@ -122,13 +135,16 @@ bool D2BlockUpdater::MergeIgnoreLists() const
 	updateFile.close();
 
 	QFile::remove(m_gamePath + m_ignorelistFile);
-    QFile::rename(m_gamePath + m_ignorelistUpdatedFile, m_gamePath + "/" + m_ignorelistFile);
+	QFile::remove(m_gamePath + m_ignorelistBakFile);
+	QFile::rename(m_gamePath + m_ignorelistUpdatedFile, m_gamePath + m_ignorelistFile);
+
+	emit updateProgressBar(20);
 
 	return true;
 }
 
 void D2BlockUpdater::UpdateRevisionNumber() const
 {
-	QSettings settings;
-	settings.setValue("Revision", m_remoteRevision);
+	QSettings settings(QSettings::SystemScope, "D2Block", "D2Block");
+	settings.setValue("Local Revision", m_remoteRevision);
 }
