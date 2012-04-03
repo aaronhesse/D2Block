@@ -36,6 +36,7 @@ void D2BlockUpdater::ProcessRegistryInformation()
 
 	m_gamePath = gameSettings.value("InstallPath").toString();
 
+	emit setIgnoreListPathOnWindow(m_gamePath + m_ignorelistFile);
 	emit updateProgressBar(20);
 }
 
@@ -74,6 +75,7 @@ void D2BlockUpdater::UpdateIgnoreListFile()
 		}
 	}
 
+	Cleanup();
 	m_ignoreListOutOfDate = true;
 }
 
@@ -147,4 +149,10 @@ void D2BlockUpdater::UpdateRevisionNumber() const
 {
 	QSettings settings(QSettings::SystemScope, "D2Block", "D2Block");
 	settings.setValue("Local Revision", m_remoteRevision);
+}
+
+void D2BlockUpdater::Cleanup() const
+{
+	QFile::remove(m_gamePath + m_ignorelistUpdatedFile);
+	QFile::remove(m_gamePath + m_ignorelistBakFile);
 }

@@ -17,6 +17,7 @@ public:
 public slots:
 	void on_setProgressBar(qint32 value);
 	void on_updateProgressBar(qint32 amount);
+	void on_setIgnoreListPathOnWindow(QString path);
 
 private:
 	Ui::D2BlockClass ui;

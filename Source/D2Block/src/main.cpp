@@ -16,6 +16,7 @@ int main(int argc, char *argv[])
 	QObject::connect(&updater, SIGNAL(UpdaterComplete()), &app, SLOT(on_updateComplete()));
 	QObject::connect(&updater, SIGNAL(updateProgressBar(qint32)), &win, SLOT(on_updateProgressBar(qint32)));
 	QObject::connect(&app, SIGNAL(setProgressBar(qint32)), &win, SLOT(on_setProgressBar(qint32)));
+	QObject::connect(&updater, SIGNAL(setIgnoreListPathOnWindow(QString)), &win, SLOT(on_setIgnoreListPathOnWindow(QString)));
 
 	win.ShowWindow();
 

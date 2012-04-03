@@ -6,6 +6,7 @@ QMainWindow(parent, flags)
 {
 	ui.setupUi(this);
 	ui.progressBar->setValue(0);
+	ui.ignorelistPath->setText("");
 }
 
 D2BlockWindow::~D2BlockWindow()
@@ -28,4 +29,9 @@ void D2BlockWindow::on_updateProgressBar(qint32 amount)
 void D2BlockWindow::on_setProgressBar(qint32 value)
 {
 	ui.progressBar->setValue(value);
+}
+
+void D2BlockWindow::on_setIgnoreListPathOnWindow(QString path)
+{
+	ui.ignorelistPath->setText(path);
 }
