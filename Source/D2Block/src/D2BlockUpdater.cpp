@@ -27,14 +27,13 @@ void D2BlockUpdater::UpdateIgnoreList()
 void D2BlockUpdater::ProcessRegistryInformation()
 {
 	QSettings settings("D2Block", "D2Block");
-	QSettings gameSettings("Blizzard Entertainment", "Diablo II");
 
 	m_httpServer = settings.value("Server").toString();
  	m_updateFile = settings.value("Update File").toString();
  	m_ignorelistFile = settings.value("Ignorelist File").toString();
  	m_localRevision = settings.value("Local Revision").toInt();
 
-	m_gamePath = gameSettings.value("InstallPath").toString();
+	m_gamePath = QSettings("Blizzard Entertainment", "Diablo II").value("InstallPath").toString();
 
 	emit setIgnoreListPathOnWindow(m_gamePath + m_ignorelistFile);
 	emit updateProgressBar(20);
@@ -128,7 +127,6 @@ bool D2BlockUpdater::MergeIgnoreLists() const
 	if(!updateFile.open(QIODevice::Append | QIODevice::Text))
 		return false;
 
-	updateFile.write("\n");
 	foreach(QString entry, userIgnoreListData)
 	{
 		updateFile.write(entry.toAscii());
@@ -147,8 +145,7 @@ bool D2BlockUpdater::MergeIgnoreLists() const
 
 void D2BlockUpdater::UpdateRevisionNumber() const
 {
-	QSettings settings(QSettings::SystemScope, "D2Block", "D2Block");
-	settings.setValue("Local Revision", m_remoteRevision);
+	QSettings(QSettings::SystemScope, "D2Block", "D2Block").setValue("Local Revision", m_remoteRevision);
 }
 
 void D2BlockUpdater::Cleanup() const

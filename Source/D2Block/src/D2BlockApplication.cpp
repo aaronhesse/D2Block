@@ -35,8 +35,8 @@ void D2BlockApplication::on_updateComplete()
 
 void D2BlockApplication::LaunchDiablo2() const
 {
+	QString gamePath = QSettings("Blizzard Entertainment","Diablo II").value("GamePath").toString();
+
 	QProcess gameProcess;
-	QString executablePath = QCoreApplication::applicationDirPath();
-	executablePath.sprintf("%s\\%s", executablePath, m_diablo2Executable);
-	gameProcess.start(m_diablo2Executable, m_passThroughCommandlineArguments);
+	gameProcess.start(gamePath, m_passThroughCommandlineArguments);
 }

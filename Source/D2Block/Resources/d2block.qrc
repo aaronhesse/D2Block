@@ -1,4 +1,5 @@
 <RCC>
-    <qresource prefix="D2Block">
-    </qresource>
+  <qresource prefix="D2Block">
+    <file>d2block.ico</file>
+  </qresource>
 </RCC>

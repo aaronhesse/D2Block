@@ -25,6 +25,10 @@
   <property name="windowTitle">
    <string>D2Block</string>
   </property>
+  <property name="windowIcon">
+   <iconset resource="Resources/d2block.qrc">
+    <normaloff>:/D2Block/d2block.ico</normaloff>:/D2Block/d2block.ico</iconset>
+  </property>
   <property name="unifiedTitleAndToolBarOnMac">
    <bool>false</bool>
   </property>
