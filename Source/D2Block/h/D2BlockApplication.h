@@ -16,10 +16,13 @@ private:
 	QStringList m_passThroughCommandlineArguments;
 
 	void ProcessCommandlineArguments(int argc, char *argv[]);
-	void LaunchDiablo2() const;
+	void SetupRegistryEntries();
+	void LaunchDiablo2();
 
 signals:
 	void setProgressBar(qint32 value);
+	void setFilePathText(QString text);
+	void setProgressTitle(QString text);
 
 public slots:
 	void on_updateComplete();

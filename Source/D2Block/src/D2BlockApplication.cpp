@@ -7,6 +7,7 @@ D2BlockApplication::D2BlockApplication(int argc, char *argv[]):
 QApplication(argc, argv)
 {
 	ProcessCommandlineArguments(argc, argv);
+	SetupRegistryEntries();
 }
 
 D2BlockApplication::~D2BlockApplication(void)
@@ -26,6 +27,23 @@ void D2BlockApplication::ProcessCommandlineArguments(int argc, char *argv[])
 	}
 }
 
+void D2BlockApplication::SetupRegistryEntries()
+{
+	QSettings settings(QSettings::SystemScope, "D2Block", "D2Block");
+	
+	bool firstRun = false;
+	if(settings.value("Server").toString().isEmpty())
+		firstRun = true;
+
+	if (firstRun)
+	{
+		settings.setValue("Server", "cloud.github.com/downloads/aaronhesse/d2block");
+		settings.setValue("Revision File", "revision.txt");
+		settings.setValue("Ignorelist File", "ignorelist");
+		settings.setValue("Local Revision", 0);
+	}
+}
+
 void D2BlockApplication::on_updateComplete()
 {
 	emit setProgressBar(100);
@@ -33,10 +51,22 @@ void D2BlockApplication::on_updateComplete()
 	exit();
 }
 
-void D2BlockApplication::LaunchDiablo2() const
+void D2BlockApplication::LaunchDiablo2()
 {
-	QString gamePath = QSettings("Blizzard Entertainment","Diablo II").value("GamePath").toString();
+	QSettings gameSettings("Blizzard Entertainment","Diablo II");
+	QString installPath = gameSettings.value("InstallPath").toString();
+	QString processPath = gameSettings.value("GamePath").toString();
+	QString filePathText = processPath;
+
+	foreach(QString argument, m_passThroughCommandlineArguments)
+		filePathText.append(" " + argument);
+
+	emit setProgressTitle("Launching Diablo II...");
+	emit setFilePathText(filePathText);
+	QCoreApplication::processEvents();
 
 	QProcess gameProcess;
-	gameProcess.start(gamePath, m_passThroughCommandlineArguments);
+	gameProcess.setWorkingDirectory(installPath);
+	gameProcess.start(processPath, m_passThroughCommandlineArguments);
+	gameProcess.waitForFinished(10000);
 }

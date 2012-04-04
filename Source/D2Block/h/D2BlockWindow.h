@@ -1,5 +1,4 @@
-#ifndef D2BLOCKWINDOW_H
-#define D2BLOCKWINDOW_H
+#pragma once
 
 #include <QtGui/QMainWindow>
 #include "ui_d2block.h"
@@ -17,10 +16,9 @@ public:
 public slots:
 	void on_setProgressBar(qint32 value);
 	void on_updateProgressBar(qint32 amount);
-	void on_setIgnoreListPathOnWindow(QString path);
+	void on_setProgressTitle(QString text);
+	void on_setFilePathText(QString text);
 
 private:
 	Ui::D2BlockClass ui;
 };
-
-#endif // D2BLOCKWINDOW_H

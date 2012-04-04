@@ -33,15 +33,15 @@ private:
 	void ProcessVersionFile();
 	bool IgnoreListIsOutOfDate();
 	void UpdateIgnoreListFile();
+	bool DownloadUpdatedIgnoreListFile();
+	bool MergeIgnoreLists();
 
-	bool DownloadUpdatedIgnoreListFile() const;
 	void BackupIgnoreListFile() const;
-	bool MergeIgnoreLists() const;
 	void UpdateRevisionNumber() const;
 	void Cleanup() const;
 
 signals:
 	void UpdaterComplete();
-	void updateProgressBar(qint32 amount) const;
-	void setIgnoreListPathOnWindow(QString path) const;
+	void updateProgressBar(qint32 amount);
+	void setFilePathText(QString path);
 };

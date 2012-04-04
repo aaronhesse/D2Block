@@ -29,13 +29,13 @@ void D2BlockUpdater::ProcessRegistryInformation()
 	QSettings settings("D2Block", "D2Block");
 
 	m_httpServer = settings.value("Server").toString();
- 	m_updateFile = settings.value("Update File").toString();
+ 	m_updateFile = settings.value("Revision File").toString();
  	m_ignorelistFile = settings.value("Ignorelist File").toString();
  	m_localRevision = settings.value("Local Revision").toInt();
 
 	m_gamePath = QSettings("Blizzard Entertainment", "Diablo II").value("InstallPath").toString();
 
-	emit setIgnoreListPathOnWindow(m_gamePath + m_ignorelistFile);
+	emit setFilePathText(m_gamePath + m_ignorelistFile);
 	emit updateProgressBar(20);
 }
 
@@ -78,7 +78,7 @@ void D2BlockUpdater::UpdateIgnoreListFile()
 	m_ignoreListOutOfDate = true;
 }
 
-bool D2BlockUpdater::DownloadUpdatedIgnoreListFile() const
+bool D2BlockUpdater::DownloadUpdatedIgnoreListFile()
 {
 	QString url = QString("http://%1/%2").arg(m_httpServer).arg(m_ignorelistFile);
 	QString ignoreListUpdateFilePath = m_gamePath + m_ignorelistUpdatedFile;
@@ -94,33 +94,37 @@ void D2BlockUpdater::BackupIgnoreListFile() const
 	QFile::copy(m_gamePath + m_ignorelistFile, m_gamePath + m_ignorelistBakFile);
 }
 
-bool D2BlockUpdater::MergeIgnoreLists() const
+bool D2BlockUpdater::MergeIgnoreLists()
 {
-	QFile bakFile(m_gamePath + m_ignorelistBakFile);
-	if(!bakFile.open(QIODevice::ReadOnly | QIODevice::Text))
-		return false;
-
-	// Look for the sections of the file to ignore. Grab all of the other lines.
-
-	bool ignoreLines = false;
 	QStringList userIgnoreListData;
 
-	while (!bakFile.atEnd()) {
-		QByteArray line = bakFile.readLine();
+	QFile bakFile(m_gamePath + m_ignorelistBakFile);
+	if (bakFile.exists())
+	{
+		if(!bakFile.open(QIODevice::ReadOnly | QIODevice::Text))
+			return false;
 
-		if (line.contains("!**D2BLOCK BEGIN**"))
-			ignoreLines = true;
-		else if (line.contains("!**D2BLOCK END**"))
-		{
-			ignoreLines = false;
-			continue;
+		// Look for the sections of the file to ignore. Grab all of the other lines.
+
+		bool ignoreLines = false;
+
+		while (!bakFile.atEnd()) {
+			QByteArray line = bakFile.readLine();
+
+			if (line.contains("!**D2BLOCK BEGIN**"))
+				ignoreLines = true;
+			else if (line.contains("!**D2BLOCK END**"))
+			{
+				ignoreLines = false;
+				continue;
+			}
+
+			if (!ignoreLines)
+				userIgnoreListData.push_back(line);
 		}
 
-		if (!ignoreLines)
-			userIgnoreListData.push_back(line);
+		bakFile.close();
 	}
-
-	bakFile.close();
 
 	// Then add all the user sections of the file to the updated file.
 	QFile updateFile(m_gamePath + m_ignorelistUpdatedFile);

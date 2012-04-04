@@ -4,9 +4,10 @@
 D2BlockWindow::D2BlockWindow(QWidget *parent, Qt::WFlags flags):
 QMainWindow(parent, flags)
 {
+	setWindowFlags(Qt::WindowCloseButtonHint);
 	ui.setupUi(this);
 	ui.progressBar->setValue(0);
-	ui.ignorelistPath->setText("");
+	ui.filePath->setText("");
 }
 
 D2BlockWindow::~D2BlockWindow()
@@ -31,7 +32,12 @@ void D2BlockWindow::on_setProgressBar(qint32 value)
 	ui.progressBar->setValue(value);
 }
 
-void D2BlockWindow::on_setIgnoreListPathOnWindow(QString path)
+void D2BlockWindow::on_setFilePathText(QString path)
 {
-	ui.ignorelistPath->setText(path);
+	ui.filePath->setText(path);
+}
+
+void D2BlockWindow::on_setProgressTitle(QString text)
+{
+	ui.progressTitle->setText(text);
 }

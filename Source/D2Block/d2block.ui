@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>494</width>
-    <height>165</height>
+    <height>124</height>
    </rect>
   </property>
   <property name="sizePolicy">
@@ -58,33 +58,7 @@
      <enum>QProgressBar::TopToBottom</enum>
     </property>
    </widget>
-   <widget class="QPushButton" name="pushButton">
-    <property name="geometry">
-     <rect>
-      <x>290</x>
-      <y>120</y>
-      <width>81</width>
-      <height>31</height>
-     </rect>
-    </property>
-    <property name="text">
-     <string>Abort</string>
-    </property>
-   </widget>
-   <widget class="QPushButton" name="okButton">
-    <property name="geometry">
-     <rect>
-      <x>100</x>
-      <y>120</y>
-      <width>81</width>
-      <height>31</height>
-     </rect>
-    </property>
-    <property name="text">
-     <string>OK</string>
-    </property>
-   </widget>
-   <widget class="QLabel" name="progressText">
+   <widget class="QLabel" name="progressTitle">
     <property name="geometry">
      <rect>
       <x>0</x>
@@ -108,7 +82,7 @@
      <set>Qt::AlignCenter</set>
     </property>
    </widget>
-   <widget class="QLabel" name="ignorelistPath">
+   <widget class="QLabel" name="filePath">
     <property name="geometry">
      <rect>
       <x>30</x>
