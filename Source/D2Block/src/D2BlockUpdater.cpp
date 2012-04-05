@@ -23,7 +23,7 @@ void D2BlockUpdater::UpdateIgnoreList()
 	if (IgnoreListIsOutOfDate())
 		UpdateIgnoreListFile();
 
-	emit UpdaterComplete();
+	emit updaterComplete();
 }
 
 void D2BlockUpdater::ProcessRegistryInformation()

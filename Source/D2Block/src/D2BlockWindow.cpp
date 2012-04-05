@@ -21,23 +21,23 @@ void D2BlockWindow::ShowWindow()
 	show();
 }
 
-void D2BlockWindow::on_updateProgressBar(qint32 amount)
+void D2BlockWindow::on_updateProgressBar(const qint32& amount)
 {
 	qint32 currentValue = ui.progressBar->value();
 	ui.progressBar->setValue(currentValue + amount);
 }
 
-void D2BlockWindow::on_setProgressBar(qint32 value)
+void D2BlockWindow::on_setProgressBar(const qint32& value)
 {
 	ui.progressBar->setValue(value);
 }
 
-void D2BlockWindow::on_setFilePathText(QString path)
+void D2BlockWindow::on_setFilePathText(const QString& path)
 {
 	ui.filePath->setText(path);
 }
 
-void D2BlockWindow::on_setProgressTitle(QString text)
+void D2BlockWindow::on_setProgressTitle(const QString& text)
 {
 	ui.progressTitle->setText(text);
 }

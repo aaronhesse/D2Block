@@ -7,14 +7,15 @@ class D2BlockSettings : public QSettings
 	Q_OBJECT
 
 public:
-	D2BlockSettings(QObject *parent = nullptr);
+
+	D2BlockSettings(QObject* parent = nullptr);
 	~D2BlockSettings();
 
 	const QString Server() const;
 	const QString RevisionFile() const;
 	const QString IgnorelistFile() const;
 	const QString LaunchTarget() const;
-	const quint32 LocalRevision() const;
+	const qint32 LocalRevision() const;
 
 	void setServer(const QString& server) const;
 	void setRevisionFile(const QString& file) const;

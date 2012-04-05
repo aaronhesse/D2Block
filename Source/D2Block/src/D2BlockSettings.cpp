@@ -1,7 +1,7 @@
 #include "StdAfx.h"
 #include "D2BlockSettings.h"
 
-D2BlockSettings::D2BlockSettings(QObject *parent):
+D2BlockSettings::D2BlockSettings(QObject* parent):
 QSettings(parent),
 m_iniFileName(QCoreApplication::applicationDirPath() + "/d2block.ini"),
 m_serverString("Server"),
@@ -39,7 +39,7 @@ const QString D2BlockSettings::LaunchTarget() const
 	return m_applicationSettings->value(m_launchTargetString).toString();
 }
 
-const quint32 D2BlockSettings::LocalRevision() const
+const qint32 D2BlockSettings::LocalRevision() const
 {
 	return m_applicationSettings->value(m_localRevisionString).toInt();
 }

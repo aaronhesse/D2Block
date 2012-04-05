@@ -11,7 +11,6 @@ public:
 	D2BlockUpdater();
 	~D2BlockUpdater();
 
-public slots:
 	void UpdateIgnoreList();
 
 private:
@@ -20,7 +19,7 @@ private:
 	QString m_httpServer;
 	QString m_updateFile;
 	QString m_ignorelistFile;
-	
+
 	const QString m_ignorelistBakFile;
 	const QString m_ignorelistUpdatedFile;
 	const QString m_d2blockStartBlock;
@@ -43,7 +42,8 @@ private:
 	void Cleanup() const;
 
 signals:
-	void UpdaterComplete();
-	void updateProgressBar(qint32 amount);
-	void setFilePathText(QString path);
+
+	void updaterComplete();
+	void updateProgressBar(const qint32& amount);
+	void setFilePathText(const QString& path);
 };

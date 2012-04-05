@@ -15,7 +15,7 @@ int main(int argc, char *argv[])
 	QObject::connect(&app, SIGNAL(setProgressTitle(QString)), &win, SLOT(on_setProgressTitle(QString)));
 	QObject::connect(&app, SIGNAL(setFilePathText(QString)), &win, SLOT(on_setFilePathText(QString)));
 
-	QObject::connect(&updater, SIGNAL(UpdaterComplete()), &app, SLOT(on_updateComplete()));
+	QObject::connect(&updater, SIGNAL(updaterComplete()), &app, SLOT(on_updateComplete()));
 	QObject::connect(&updater, SIGNAL(updateProgressBar(qint32)), &win, SLOT(on_updateProgressBar(qint32)));
 	QObject::connect(&updater, SIGNAL(setFilePathText(QString)), &win, SLOT(on_setFilePathText(QString)));
 

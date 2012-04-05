@@ -6,6 +6,15 @@ class D2BlockApplication : public QApplication
 {
 	Q_OBJECT
 
+public:
+
+	D2BlockApplication(int argc, char *argv[]);
+	~D2BlockApplication(void);
+
+public slots:
+
+	void on_updateComplete();
+
 private:
 
 	QStringList m_passThroughCommandlineArguments;
@@ -15,17 +24,8 @@ private:
 	void LaunchLaunchTarget();
 
 signals:
-	void setProgressBar(qint32 value);
-	void setFilePathText(QString text);
-	void setProgressTitle(QString text);
 
-public slots:
-	void on_updateComplete();
-
-public:
-	D2BlockApplication(int argc, char *argv[]);
-	~D2BlockApplication(void);
-
-	void RunUpdater() const;
+	void setProgressBar(const qint32& value);
+	void setFilePathText(const QString& text);
+	void setProgressTitle(const QString& text);
 };
-

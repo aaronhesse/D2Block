@@ -59,7 +59,7 @@ void D2BlockApplication::LaunchLaunchTarget()
 	QString installPath;
 	QString filePathText;
 
-	QString launchTargetPath = D2BlockSettings().LaunchTarget();
+	const QString launchTargetPath = D2BlockSettings().LaunchTarget();
 
 	if (!launchTargetPath.isEmpty())
 	{
