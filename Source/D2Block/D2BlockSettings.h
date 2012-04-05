@@ -25,7 +25,14 @@ public:
 private:
 	
 	QSettings* m_applicationSettings;
+
 	const QString m_iniFileName;
+
+	const QString m_serverString;
+	const QString m_revisionFileString;
+	const QString m_ignorelistFileString;
+	const QString m_launchTargetString;
+	const QString m_localRevisionString;
 
 };
 
