@@ -25,7 +25,7 @@ public:
 
 private:
 	
-	QSettings* const m_applicationSettings;
+	QSettings* m_applicationSettings;
 
 	const QString m_iniFileName;
 
