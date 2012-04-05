@@ -10,6 +10,7 @@ private:
 	int argumentCount;
 	char** argumentValues;
 
+	const QString m_iniFilePath;
 	QStringList m_passThroughCommandlineArguments;
 
 	void ProcessCommandlineArguments(int argc, char *argv[]);

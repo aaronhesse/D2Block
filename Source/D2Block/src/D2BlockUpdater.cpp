@@ -2,13 +2,13 @@
 #include "D2BlockUpdater.h"
 #include "D2BlockDownloader.h"
 
-const QString D2BlockUpdater::m_ignorelistBakFile = "ignorelist.bak";
-const QString D2BlockUpdater::m_ignorelistUpdatedFile = "ignorelist.updated";
-
 D2BlockUpdater::D2BlockUpdater():
 m_localRevision(0),
 m_remoteRevision(0),
-m_ignoreListOutOfDate(false)
+m_ignoreListOutOfDate(false),
+m_iniFilePath(QCoreApplication::applicationDirPath() + "/d2block.ini"),
+m_ignorelistBakFile("ignorelist.bak"),
+m_ignorelistUpdatedFile("ignorelist.updated")
 {
 }
 
@@ -26,7 +26,7 @@ void D2BlockUpdater::UpdateIgnoreList()
 
 void D2BlockUpdater::ProcessRegistryInformation()
 {
-	QSettings settings(QCoreApplication::applicationDirPath() + "/d2block.ini", QSettings::IniFormat);
+	QSettings settings(m_iniFilePath, QSettings::IniFormat);
 
 	m_httpServer = settings.value("Server").toString();
  	m_updateFile = settings.value("RevisionFile").toString();
@@ -149,7 +149,7 @@ bool D2BlockUpdater::MergeIgnoreLists()
 
 void D2BlockUpdater::UpdateRevisionNumber() const
 {
-	QSettings(QCoreApplication::applicationDirPath() + "/d2block.ini", QSettings::IniFormat).setValue("LocalRevision", m_remoteRevision);
+	QSettings(m_iniFilePath, QSettings::IniFormat).setValue("LocalRevision", m_remoteRevision);
 }
 
 void D2BlockUpdater::Cleanup() const

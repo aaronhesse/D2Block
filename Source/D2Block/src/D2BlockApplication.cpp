@@ -2,7 +2,8 @@
 #include "D2BlockApplication.h"
 
 D2BlockApplication::D2BlockApplication(int argc, char *argv[]):
-QApplication(argc, argv)
+QApplication(argc, argv),
+m_iniFilePath(QCoreApplication::applicationDirPath() + "/d2block.ini")
 {
 	ProcessCommandlineArguments(argc, argv);
 	SetupRegistryEntries();
@@ -27,18 +28,21 @@ void D2BlockApplication::ProcessCommandlineArguments(int argc, char *argv[])
 
 void D2BlockApplication::SetupRegistryEntries()
 {
-	QSettings settings(QCoreApplication::applicationDirPath() + "/d2block.ini", QSettings::IniFormat);
+	QSettings settings(m_iniFilePath, QSettings::IniFormat);
 	
-	bool firstRun = false;
+	bool iniFileExists = true;
 	if(settings.value("Server").toString().isEmpty())
-		firstRun = true;
+		iniFileExists = false;
 
-	if (firstRun)
+	if (!iniFileExists)
 	{
+		QString gamePath = QSettings("Blizzard Entertainment", "Diablo II").value("GamePath").toString();
+
 		settings.setValue("Server", "cloud.github.com/downloads/aaronhesse/d2block");
 		settings.setValue("RevisionFile", "revision.txt");
 		settings.setValue("IgnorelistFile", "ignorelist");
 		settings.setValue("LocalRevision", 0);
+		settings.setValue("LaunchTarget", gamePath);
 	}
 } 
 
@@ -58,7 +62,7 @@ void D2BlockApplication::LaunchLaunchTarget()
 	QString installPath;
 	QString filePathText;
 
-	QString launchTargetPath = QSettings(QCoreApplication::applicationDirPath() + "/d2block.ini", QSettings::IniFormat).value("LaunchTarget").toString();
+	QString launchTargetPath = QSettings(m_iniFilePath, QSettings::IniFormat).value("LaunchTarget").toString();
 
 	if (!launchTargetPath.isEmpty())
 	{

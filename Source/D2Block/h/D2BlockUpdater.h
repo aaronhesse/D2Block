@@ -20,9 +20,10 @@ private:
 	QString m_httpServer;
 	QString m_updateFile;
 	QString m_ignorelistFile;
-
-	static const QString m_ignorelistBakFile;
-	static const QString m_ignorelistUpdatedFile;
+	
+	const QString m_iniFilePath;
+	const QString m_ignorelistBakFile;
+	const QString m_ignorelistUpdatedFile;
 
 	qint32 m_localRevision;
 	qint32 m_remoteRevision;
