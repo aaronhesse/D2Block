@@ -8,7 +8,7 @@ class D2BlockSettings : public QSettings
 
 public:
 
-	D2BlockSettings(QObject* parent = nullptr);
+	D2BlockSettings();
 	~D2BlockSettings();
 
 	const QString Server() const;
@@ -17,15 +17,15 @@ public:
 	const QString LaunchTarget() const;
 	const qint32 LocalRevision() const;
 
-	void setServer(const QString& server) const;
-	void setRevisionFile(const QString& file) const;
-	void setIgnorelistFile(const QString& file) const;
-	void setLaunchTarget(const QString& target) const;
-	void setLocalRevision(const qint32& revision) const;
+	void setServer(const QString& server);
+	void setRevisionFile(const QString& file);
+	void setIgnorelistFile(const QString& file);
+	void setLaunchTarget(const QString& target);
+	void setLocalRevision(const qint32& revision);
 
 private:
 	
-	QSettings* m_applicationSettings;
+	QSettings* const m_applicationSettings;
 
 	const QString m_iniFileName;
 
