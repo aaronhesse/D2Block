@@ -21,9 +21,10 @@ private:
 	QString m_updateFile;
 	QString m_ignorelistFile;
 	
-	const QString m_iniFilePath;
 	const QString m_ignorelistBakFile;
 	const QString m_ignorelistUpdatedFile;
+	const QString m_d2blockStartBlock;
+	const QString m_d2blockEndBlock;
 
 	qint32 m_localRevision;
 	qint32 m_remoteRevision;

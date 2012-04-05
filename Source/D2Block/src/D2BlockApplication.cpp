@@ -1,12 +1,12 @@
 #include "StdAfx.h"
 #include "D2BlockApplication.h"
+#include "D2BlockSettings.h"
 
 D2BlockApplication::D2BlockApplication(int argc, char *argv[]):
-QApplication(argc, argv),
-m_iniFilePath(QCoreApplication::applicationDirPath() + "/d2block.ini")
+QApplication(argc, argv)
 {
 	ProcessCommandlineArguments(argc, argv);
-	SetupRegistryEntries();
+	ConfigureSettings();
 }
 
 D2BlockApplication::~D2BlockApplication(void)
@@ -15,34 +15,31 @@ D2BlockApplication::~D2BlockApplication(void)
 
 void D2BlockApplication::ProcessCommandlineArguments(int argc, char *argv[])
 {
-	argumentCount = argc;
-	argumentValues = argv;
-
 	// Iterate over the pass-through command-line arguments, store them in a class member QStringList
 	// Skip the first argument though because that's the fully qualified path of this process.
-	for(int i = 1; i < argumentCount; i++)
+	for(int i = 1; i < argc; i++)
 	{
-		m_passThroughCommandlineArguments.push_back(argumentValues[i]);
+		m_passThroughCommandlineArguments.push_back(argv[i]);
 	}
 }
 
-void D2BlockApplication::SetupRegistryEntries()
+void D2BlockApplication::ConfigureSettings() const
 {
-	QSettings settings(m_iniFilePath, QSettings::IniFormat);
+	D2BlockSettings settings;
 	
 	bool iniFileExists = true;
-	if(settings.value("Server").toString().isEmpty())
+	if(settings.Server().isEmpty())
 		iniFileExists = false;
 
 	if (!iniFileExists)
 	{
-		QString gamePath = QSettings("Blizzard Entertainment", "Diablo II").value("GamePath").toString();
+		const QString gamePath = QSettings("Blizzard Entertainment", "Diablo II").value("GamePath").toString();
 
-		settings.setValue("Server", "cloud.github.com/downloads/aaronhesse/d2block");
-		settings.setValue("RevisionFile", "revision.txt");
-		settings.setValue("IgnorelistFile", "ignorelist");
-		settings.setValue("LocalRevision", 0);
-		settings.setValue("LaunchTarget", gamePath);
+		settings.setServer("cloud.github.com/downloads/aaronhesse/d2block");
+		settings.setRevisionFile("revision.txt");
+		settings.setIgnorelistFile("ignorelist");
+		settings.setLocalRevision(0);
+		settings.setLaunchTarget(gamePath);
 	}
 } 
 
@@ -62,7 +59,7 @@ void D2BlockApplication::LaunchLaunchTarget()
 	QString installPath;
 	QString filePathText;
 
-	QString launchTargetPath = QSettings(m_iniFilePath, QSettings::IniFormat).value("LaunchTarget").toString();
+	QString launchTargetPath = D2BlockSettings().LaunchTarget();
 
 	if (!launchTargetPath.isEmpty())
 	{
@@ -73,7 +70,7 @@ void D2BlockApplication::LaunchLaunchTarget()
 	}
 	else
 	{
-		QSettings gameSettings("Blizzard Entertainment","Diablo II");
+		QSettings gameSettings("Blizzard Entertainment", "Diablo II");
 		installPath = gameSettings.value("InstallPath").toString();
 		processPath = gameSettings.value("GamePath").toString();
 		filePathText = processPath;

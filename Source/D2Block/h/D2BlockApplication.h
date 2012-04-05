@@ -7,14 +7,11 @@ class D2BlockApplication : public QApplication
 	Q_OBJECT
 
 private:
-	int argumentCount;
-	char** argumentValues;
 
-	const QString m_iniFilePath;
 	QStringList m_passThroughCommandlineArguments;
 
-	void ProcessCommandlineArguments(int argc, char *argv[]);
-	void SetupRegistryEntries();
+	void ProcessCommandlineArguments(int argc, char* argv[]);
+	void ConfigureSettings() const;
 	void LaunchLaunchTarget();
 
 signals:

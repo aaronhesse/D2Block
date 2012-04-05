@@ -1,14 +1,16 @@
 #include "StdAfx.h"
 #include "D2BlockUpdater.h"
 #include "D2BlockDownloader.h"
+#include "D2BlockSettings.h"
 
 D2BlockUpdater::D2BlockUpdater():
 m_localRevision(0),
 m_remoteRevision(0),
 m_ignoreListOutOfDate(false),
-m_iniFilePath(QCoreApplication::applicationDirPath() + "/d2block.ini"),
 m_ignorelistBakFile("ignorelist.bak"),
-m_ignorelistUpdatedFile("ignorelist.updated")
+m_ignorelistUpdatedFile("ignorelist.updated"),
+m_d2blockStartBlock("!**D2BLOCK BEGIN**"),
+m_d2blockEndBlock("!**D2BLOCK END**")
 {
 }
 
@@ -26,12 +28,12 @@ void D2BlockUpdater::UpdateIgnoreList()
 
 void D2BlockUpdater::ProcessRegistryInformation()
 {
-	QSettings settings(m_iniFilePath, QSettings::IniFormat);
+	D2BlockSettings settings;
 
-	m_httpServer = settings.value("Server").toString();
- 	m_updateFile = settings.value("RevisionFile").toString();
- 	m_ignorelistFile = settings.value("IgnorelistFile").toString();
- 	m_localRevision = settings.value("LocalRevision").toInt();
+	m_httpServer     = settings.Server();
+ 	m_updateFile     = settings.RevisionFile();
+ 	m_ignorelistFile = settings.IgnorelistFile();
+ 	m_localRevision  = settings.LocalRevision();
 
 	m_gamePath = QSettings("Blizzard Entertainment", "Diablo II").value("InstallPath").toString();
 
@@ -41,10 +43,9 @@ void D2BlockUpdater::ProcessRegistryInformation()
 
 void D2BlockUpdater::ProcessVersionFile()
 {
-	QString url = QString("http://%1/%2").arg(m_httpServer).arg(m_updateFile);
+	const QString url = QString("http://%1/%2").arg(m_httpServer).arg(m_updateFile);
+	const QByteArray fileData = D2BlockDownloader().DownloadFile(url);
 
-	D2BlockDownloader downloader;
-	QByteArray fileData = downloader.DownloadFile(url);
 	m_remoteRevision = atoi(fileData);
 
 	if (m_remoteRevision > m_localRevision)
@@ -80,11 +81,11 @@ void D2BlockUpdater::UpdateIgnoreListFile()
 
 bool D2BlockUpdater::DownloadUpdatedIgnoreListFile()
 {
-	QString url = QString("http://%1/%2").arg(m_httpServer).arg(m_ignorelistFile);
-	QString ignoreListUpdateFilePath = m_gamePath + m_ignorelistUpdatedFile;
+	const QString url = QString("http://%1/%2").arg(m_httpServer).arg(m_ignorelistFile);
+	const QString ignoreListUpdateFilePath = m_gamePath + m_ignorelistUpdatedFile;
 
-	D2BlockDownloader downloader;
-	bool success = downloader.DownloadFileToDisk(url, ignoreListUpdateFilePath);
+	const bool success = D2BlockDownloader().DownloadFileToDisk(url, ignoreListUpdateFilePath);
+
 	emit updateProgressBar(30);
 	return success;
 }
@@ -111,9 +112,9 @@ bool D2BlockUpdater::MergeIgnoreLists()
 		while (!bakFile.atEnd()) {
 			QByteArray line = bakFile.readLine();
 
-			if (line.contains("!**D2BLOCK BEGIN**"))
+			if (line.contains(m_d2blockStartBlock.toAscii()))
 				ignoreLines = true;
-			else if (line.contains("!**D2BLOCK END**"))
+			else if (line.contains(m_d2blockEndBlock.toAscii()))
 			{
 				ignoreLines = false;
 				continue;
@@ -149,7 +150,7 @@ bool D2BlockUpdater::MergeIgnoreLists()
 
 void D2BlockUpdater::UpdateRevisionNumber() const
 {
-	QSettings(m_iniFilePath, QSettings::IniFormat).setValue("LocalRevision", m_remoteRevision);
+	D2BlockSettings().setLocalRevision(m_remoteRevision);
 }
 
 void D2BlockUpdater::Cleanup() const

@@ -80,6 +80,15 @@
     <ClCompile Include="GeneratedFiles\Release\moc_D2BlockDownloader.cpp">
       <Filter>Generated Files\Release</Filter>
     </ClCompile>
+    <ClCompile Include="D2BlockSettings.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\Debug\moc_D2BlockSettings.cpp">
+      <Filter>Generated Files\Debug</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\Release\moc_D2BlockSettings.cpp">
+      <Filter>Generated Files\Release</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="GeneratedFiles\ui_d2block.h">
@@ -109,6 +118,9 @@
       <Filter>Header Files</Filter>
     </CustomBuild>
     <CustomBuild Include="h\D2BlockDownloader.h">
+      <Filter>Header Files</Filter>
+    </CustomBuild>
+    <CustomBuild Include="D2BlockSettings.h">
       <Filter>Header Files</Filter>
     </CustomBuild>
   </ItemGroup>

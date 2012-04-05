@@ -18,7 +18,7 @@ bool D2BlockDownloader::DownloadFileToDisk(const QString& url, const QString& pa
 {
 	bool retVal = false;
 
-	QByteArray fileData = DownloadFile(url);
+	const QByteArray fileData = DownloadFile(url);
 
 	QFile* file = new QFile(pathOnDisk);
 
