@@ -3,9 +3,10 @@
 #include "D2BlockSettings.h"
 
 D2BlockApplication::D2BlockApplication(int argc, char *argv[]):
-QApplication(argc, argv)
+QApplication(argc, argv),
+m_maxProcessWaitTime(60000)
 {
-	ProcessCommandlineArguments(argc, argv);
+	ProcessCommandlineArguments();
 	ConfigureSettings();
 }
 
@@ -13,13 +14,17 @@ D2BlockApplication::~D2BlockApplication(void)
 {
 }
 
-void D2BlockApplication::ProcessCommandlineArguments(int argc, char *argv[])
+void D2BlockApplication::ProcessCommandlineArguments()
 {
 	// Iterate over the pass-through command-line arguments, store them in a class member QStringList
 	// Skip the first argument though because that's the fully qualified path of this process.
-	for(int i = 1; i < argc; i++)
+	QStringList arguments = QCoreApplication::arguments();
+	foreach(QString arg, arguments)
 	{
-		m_passThroughCommandlineArguments.push_back(argv[i]);
+		if(arg.compare(arguments.at(0)) == 0)
+			continue;
+
+		m_passThroughCommandlineArguments.push_back(arg);
 	}
 }
 
@@ -86,5 +91,5 @@ void D2BlockApplication::LaunchLaunchTarget()
 	QProcess gameProcess;
 	gameProcess.setWorkingDirectory(installPath);
 	gameProcess.start(processPath, m_passThroughCommandlineArguments);
-	gameProcess.waitForFinished(60000);
+	gameProcess.waitForFinished(m_maxProcessWaitTime);
 }
