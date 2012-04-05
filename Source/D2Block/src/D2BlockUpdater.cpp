@@ -26,12 +26,12 @@ void D2BlockUpdater::UpdateIgnoreList()
 
 void D2BlockUpdater::ProcessRegistryInformation()
 {
-	QSettings settings("D2Block", "D2Block");
+	QSettings settings(QCoreApplication::applicationDirPath() + "/d2block.ini", QSettings::IniFormat);
 
 	m_httpServer = settings.value("Server").toString();
- 	m_updateFile = settings.value("Revision File").toString();
- 	m_ignorelistFile = settings.value("Ignorelist File").toString();
- 	m_localRevision = settings.value("Local Revision").toInt();
+ 	m_updateFile = settings.value("RevisionFile").toString();
+ 	m_ignorelistFile = settings.value("IgnorelistFile").toString();
+ 	m_localRevision = settings.value("LocalRevision").toInt();
 
 	m_gamePath = QSettings("Blizzard Entertainment", "Diablo II").value("InstallPath").toString();
 
@@ -149,7 +149,7 @@ bool D2BlockUpdater::MergeIgnoreLists()
 
 void D2BlockUpdater::UpdateRevisionNumber() const
 {
-	QSettings(QSettings::SystemScope, "D2Block", "D2Block").setValue("Local Revision", m_remoteRevision);
+	QSettings(QCoreApplication::applicationDirPath() + "/d2block.ini", QSettings::IniFormat).setValue("LocalRevision", m_remoteRevision);
 }
 
 void D2BlockUpdater::Cleanup() const

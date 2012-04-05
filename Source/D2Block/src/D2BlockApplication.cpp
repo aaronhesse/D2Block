@@ -1,8 +1,6 @@
 #include "StdAfx.h"
 #include "D2BlockApplication.h"
 
-const QString D2BlockApplication::m_diablo2Executable = "Diablo II.exe";
-
 D2BlockApplication::D2BlockApplication(int argc, char *argv[]):
 QApplication(argc, argv)
 {
@@ -29,7 +27,7 @@ void D2BlockApplication::ProcessCommandlineArguments(int argc, char *argv[])
 
 void D2BlockApplication::SetupRegistryEntries()
 {
-	QSettings settings(QSettings::SystemScope, "D2Block", "D2Block");
+	QSettings settings(QCoreApplication::applicationDirPath() + "/d2block.ini", QSettings::IniFormat);
 	
 	bool firstRun = false;
 	if(settings.value("Server").toString().isEmpty())
@@ -38,9 +36,9 @@ void D2BlockApplication::SetupRegistryEntries()
 	if (firstRun)
 	{
 		settings.setValue("Server", "cloud.github.com/downloads/aaronhesse/d2block");
-		settings.setValue("Revision File", "revision.txt");
-		settings.setValue("Ignorelist File", "ignorelist");
-		settings.setValue("Local Revision", 0);
+		settings.setValue("RevisionFile", "revision.txt");
+		settings.setValue("IgnorelistFile", "ignorelist");
+		settings.setValue("LocalRevision", 0);
 	}
 } 
 
@@ -60,7 +58,7 @@ void D2BlockApplication::LaunchLaunchTarget()
 	QString installPath;
 	QString filePathText;
 
-	QString launchTargetPath = QSettings("D2Block","D2Block").value("Launch Target").toString();
+	QString launchTargetPath = QSettings(QCoreApplication::applicationDirPath() + "/d2block.ini", QSettings::IniFormat).value("LaunchTarget").toString();
 
 	if (!launchTargetPath.isEmpty())
 	{
@@ -87,5 +85,5 @@ void D2BlockApplication::LaunchLaunchTarget()
 	QProcess gameProcess;
 	gameProcess.setWorkingDirectory(installPath);
 	gameProcess.start(processPath, m_passThroughCommandlineArguments);
-	gameProcess.waitForFinished(10000);
+	gameProcess.waitForFinished(60000);
 }

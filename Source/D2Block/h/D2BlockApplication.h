@@ -10,9 +10,6 @@ private:
 	int argumentCount;
 	char** argumentValues;
 
-	static const size_t maxGameArgumentLength = 64;
-	static const QString m_diablo2Executable;
-
 	QStringList m_passThroughCommandlineArguments;
 
 	void ProcessCommandlineArguments(int argc, char *argv[]);
