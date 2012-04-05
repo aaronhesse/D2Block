@@ -17,7 +17,7 @@ private:
 
 	void ProcessCommandlineArguments(int argc, char *argv[]);
 	void SetupRegistryEntries();
-	void LaunchDiablo2();
+	void LaunchLaunchTarget();
 
 signals:
 	void setProgressBar(qint32 value);

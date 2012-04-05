@@ -42,26 +42,45 @@ void D2BlockApplication::SetupRegistryEntries()
 		settings.setValue("Ignorelist File", "ignorelist");
 		settings.setValue("Local Revision", 0);
 	}
-}
+} 
 
 void D2BlockApplication::on_updateComplete()
 {
 	emit setProgressBar(100);
-	LaunchDiablo2();
+	LaunchLaunchTarget();
 	exit();
 }
 
-void D2BlockApplication::LaunchDiablo2()
+void D2BlockApplication::LaunchLaunchTarget()
 {
-	QSettings gameSettings("Blizzard Entertainment","Diablo II");
-	QString installPath = gameSettings.value("InstallPath").toString();
-	QString processPath = gameSettings.value("GamePath").toString();
-	QString filePathText = processPath;
+	// If no launch target key/value is found, then we use Diablo II.exe as a the launch target.
+	// Otherwise use the user-defined target.
+
+	QString processPath;
+	QString installPath;
+	QString filePathText;
+
+	QString launchTargetPath = QSettings("D2Block","D2Block").value("Launch Target").toString();
+
+	if (!launchTargetPath.isEmpty())
+	{
+		processPath = launchTargetPath;
+		installPath = QDir::toNativeSeparators(launchTargetPath);
+		installPath.truncate(installPath.lastIndexOf(QDir::separator()));
+		filePathText = launchTargetPath;
+	}
+	else
+	{
+		QSettings gameSettings("Blizzard Entertainment","Diablo II");
+		installPath = gameSettings.value("InstallPath").toString();
+		processPath = gameSettings.value("GamePath").toString();
+		filePathText = processPath;
+	}
 
 	foreach(QString argument, m_passThroughCommandlineArguments)
 		filePathText.append(" " + argument);
 
-	emit setProgressTitle("Launching Diablo II...");
+	emit setProgressTitle("Launching Launch Target...");
 	emit setFilePathText(filePathText);
 	QCoreApplication::processEvents();
 
