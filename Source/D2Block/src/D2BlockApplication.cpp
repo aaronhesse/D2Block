@@ -9,7 +9,7 @@ QApplication(argc, argv)
 	ConfigureSettings();
 }
 
-D2BlockApplication::~D2BlockApplication(void)
+D2BlockApplication::~D2BlockApplication()
 {
 }
 

@@ -9,7 +9,7 @@ class D2BlockApplication : public QApplication
 public:
 
 	D2BlockApplication(int argc, char *argv[]);
-	~D2BlockApplication(void);
+	~D2BlockApplication();
 
 public slots:
 

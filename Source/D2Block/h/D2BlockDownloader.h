@@ -8,8 +8,8 @@ class D2BlockDownloader : public QObject
 
 public:
 
-	D2BlockDownloader(void);
-	~D2BlockDownloader(void);
+	D2BlockDownloader();
+	~D2BlockDownloader();
 
 	QByteArray DownloadFile(const QString& url);
 	bool DownloadFileToDisk(const QString& url, const QString& pathOnDisk);
