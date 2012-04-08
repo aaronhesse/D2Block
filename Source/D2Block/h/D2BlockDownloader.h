@@ -20,7 +20,7 @@ public slots:
 
 private:
 
-	QNetworkAccessManager* m_netManager;
+	QNetworkAccessManager m_netManager;
 	QByteArray m_replyData;
 };
 

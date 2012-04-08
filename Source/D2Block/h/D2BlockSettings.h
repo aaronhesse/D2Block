@@ -11,6 +11,8 @@ public:
 	D2BlockSettings();
 	~D2BlockSettings();
 
+	const QString iniFileName() const;
+
 	const QString Server() const;
 	const QString RevisionFile() const;
 	const QString IgnorelistFile() const;
@@ -24,8 +26,6 @@ public:
 	void setLocalRevision(const qint32& revision);
 
 private:
-	
-	QSettings* m_applicationSettings;
 
 	const QString m_iniFileName;
 
@@ -35,5 +35,6 @@ private:
 	const QString m_launchTargetString;
 	const QString m_localRevisionString;
 
+	QSettings m_applicationSettings;
 };
 

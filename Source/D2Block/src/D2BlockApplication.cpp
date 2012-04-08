@@ -31,12 +31,8 @@ void D2BlockApplication::ProcessCommandlineArguments()
 void D2BlockApplication::ConfigureSettings() const
 {
 	D2BlockSettings settings;
-	
-	bool iniFileExists = true;
-	if(settings.Server().isEmpty())
-		iniFileExists = false;
 
-	if (!iniFileExists)
+	if (!QFile::exists(settings.iniFileName()))
 	{
 		const QString gamePath = QSettings("Blizzard Entertainment", "Diablo II").value("GamePath").toString();
 
@@ -90,6 +86,6 @@ void D2BlockApplication::LaunchLaunchTarget()
 
 	QProcess gameProcess;
 	gameProcess.setWorkingDirectory(installPath);
-	gameProcess.start(processPath, m_passThroughCommandlineArguments);
-	gameProcess.waitForFinished(m_maxProcessWaitTime);
+	gameProcess.startDetached(processPath, m_passThroughCommandlineArguments);
+	//gameProcess.waitForFinished(m_maxProcessWaitTime);
 }

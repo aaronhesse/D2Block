@@ -1,17 +1,14 @@
 #include "StdAfx.h"
 #include "D2BlockDownloader.h"
 
-D2BlockDownloader::D2BlockDownloader(void)
+D2BlockDownloader::D2BlockDownloader():
+m_netManager(this)
 {
-	m_netManager = new QNetworkAccessManager(this);
-
-	QObject::connect(m_netManager, SIGNAL(finished(QNetworkReply*)), this, SLOT(on_downloadFinished(QNetworkReply*)));
+	QObject::connect(&m_netManager, SIGNAL(finished(QNetworkReply*)), this, SLOT(on_downloadFinished(QNetworkReply*)));
 }
 
 D2BlockDownloader::~D2BlockDownloader(void)
 {
-	delete m_netManager;
-	m_netManager = nullptr;
 }
 
 bool D2BlockDownloader::DownloadFileToDisk(const QString& url, const QString& pathOnDisk)
@@ -20,18 +17,15 @@ bool D2BlockDownloader::DownloadFileToDisk(const QString& url, const QString& pa
 
 	const QByteArray fileData = DownloadFile(url);
 
-	QFile* file = new QFile(pathOnDisk);
+	QFile file(pathOnDisk);
 
-	if (file->open(QIODevice::WriteOnly))
+	if (file.open(QIODevice::WriteOnly))
 	{
-		if (file->write(fileData))
+		if (file.write(fileData))
 			retVal = true;
 
-		file->close();
+		file.close();
 	}
-
-	delete file;
-	file = nullptr;
 
 	return retVal;
 }
@@ -39,7 +33,7 @@ bool D2BlockDownloader::DownloadFileToDisk(const QString& url, const QString& pa
 QByteArray D2BlockDownloader::DownloadFile(const QString& url)
 {
 	QNetworkRequest request(url);
-	QNetworkReply* reply = m_netManager->get(request);
+	QNetworkReply* reply = m_netManager.get(request);
 
 	// Block until the reply/download is complete.
 	QEventLoop loop;
