@@ -87,5 +87,4 @@ void D2BlockApplication::LaunchLaunchTarget()
 	QProcess gameProcess;
 	gameProcess.setWorkingDirectory(installPath);
 	gameProcess.startDetached(processPath, m_passThroughCommandlineArguments);
-	//gameProcess.waitForFinished(m_maxProcessWaitTime);
 }
