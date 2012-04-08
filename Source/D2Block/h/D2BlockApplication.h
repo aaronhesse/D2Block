@@ -17,7 +17,6 @@ public slots:
 
 private:
 
-	const quint32 m_maxProcessWaitTime; // ms
 	QStringList m_passThroughCommandlineArguments;
 
 	void ProcessCommandlineArguments();

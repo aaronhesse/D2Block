@@ -3,8 +3,7 @@
 #include "D2BlockSettings.h"
 
 D2BlockApplication::D2BlockApplication(int argc, char *argv[]):
-QApplication(argc, argv),
-m_maxProcessWaitTime(60000)
+QApplication(argc, argv)
 {
 	ProcessCommandlineArguments();
 	ConfigureSettings();
