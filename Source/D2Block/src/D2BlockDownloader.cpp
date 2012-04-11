@@ -7,7 +7,7 @@ m_netManager(this)
 	QObject::connect(&m_netManager, SIGNAL(finished(QNetworkReply*)), this, SLOT(on_downloadFinished(QNetworkReply*)));
 }
 
-D2BlockDownloader::~D2BlockDownloader(void)
+D2BlockDownloader::~D2BlockDownloader()
 {
 }
 

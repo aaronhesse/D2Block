@@ -12,7 +12,7 @@ public:
 	D2BlockWindow(QWidget *parent = 0, Qt::WFlags flags = 0);
 	~D2BlockWindow();
 
-	void ShowWindow();
+	void show();
 
 public slots:
 

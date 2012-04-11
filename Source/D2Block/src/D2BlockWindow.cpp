@@ -15,10 +15,10 @@ D2BlockWindow::~D2BlockWindow()
 
 }
 
-void D2BlockWindow::ShowWindow()
+void D2BlockWindow::show()
 {
 	setFixedSize(width(), height());
-	show();
+	QMainWindow::show();
 }
 
 void D2BlockWindow::on_updateProgressBar(const qint32& amount)

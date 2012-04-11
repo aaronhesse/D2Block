@@ -14,7 +14,7 @@ public:
 	QByteArray DownloadFile(const QString& url);
 	bool DownloadFileToDisk(const QString& url, const QString& pathOnDisk);
 
-public slots:
+private slots:
 
 	void on_downloadFinished(QNetworkReply* data);
 
