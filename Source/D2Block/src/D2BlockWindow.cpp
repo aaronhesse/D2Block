@@ -1,5 +1,5 @@
-#include "stdafx.h"
-#include "d2blockWindow.h"
+#include "StdAfx.h"
+#include "D2BlockWindow.h"
 
 D2BlockWindow::D2BlockWindow(QWidget *parent, Qt::WFlags flags):
 QMainWindow(parent, flags)

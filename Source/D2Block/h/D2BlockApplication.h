@@ -1,6 +1,7 @@
 #pragma once
 
 #include <QtGui/QApplication>
+#include <QStringList>
 
 class D2BlockApplication : public QApplication
 {

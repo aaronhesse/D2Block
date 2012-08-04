@@ -1,6 +1,7 @@
 #pragma once
 
 #include <QObject>
+#include <QtNetwork/QNetworkAccessManager>
 
 class D2BlockDownloader : public QObject
 {

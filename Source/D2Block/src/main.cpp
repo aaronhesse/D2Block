@@ -2,6 +2,7 @@
 #include "D2BlockWindow.h"
 #include "D2BlockUpdater.h"
 #include "D2BlockApplication.h"
+#include <QtConcurrentRun>
 
 static void primaryWorkerThreadFunc(D2BlockUpdater* app);
 

@@ -5,4 +5,6 @@
 #include <QtNetwork/QNetworkReply>
 #include <QThread>
 
+#ifdef Q_WS_WIN
 #include <windows.h>
+#endif
