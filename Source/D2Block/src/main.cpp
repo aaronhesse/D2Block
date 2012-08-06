@@ -19,6 +19,7 @@ int main(int argc, char *argv[])
 	QObject::connect(&updater, SIGNAL(updaterComplete()), &app, SLOT(on_updateComplete()));
 	QObject::connect(&updater, SIGNAL(updateProgressBar(qint32)), &win, SLOT(on_updateProgressBar(qint32)));
 	QObject::connect(&updater, SIGNAL(setFilePathText(QString)), &win, SLOT(on_setFilePathText(QString)));
+	QObject::connect(&updater, SIGNAL(diablo2NotInstalled()), &win, SLOT(on_diablo2NotInstalled()));
 
 	win.show();
 

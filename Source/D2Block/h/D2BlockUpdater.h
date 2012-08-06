@@ -32,10 +32,11 @@ private:
 
 	void ProcessRegistryInformation();
 	void ProcessVersionFile();
-	bool IgnoreListIsOutOfDate();
 	void UpdateIgnoreListFile();
+	bool IgnoreListIsOutOfDate();
 	bool DownloadUpdatedIgnoreListFile();
 	bool MergeIgnoreLists();
+	bool IsDiablo2Installed();
 
 	void BackupIgnoreListFile() const;
 	void UpdateRevisionNumber() const;
@@ -43,6 +44,7 @@ private:
 
 signals:
 
+	void diablo2NotInstalled();
 	void updaterComplete();
 	void updateProgressBar(const qint32& amount);
 	void setFilePathText(const QString& path);

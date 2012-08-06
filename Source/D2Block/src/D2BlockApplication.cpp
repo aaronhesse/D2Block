@@ -3,7 +3,7 @@
 #include "D2BlockSettings.h"
 
 D2BlockApplication::D2BlockApplication(int argc, char *argv[]):
-QApplication(argc, argv)
+	QApplication(argc, argv)
 {
 	ProcessCommandlineArguments();
 	ConfigureSettings();
@@ -86,4 +86,14 @@ void D2BlockApplication::LaunchLaunchTarget()
 	QProcess gameProcess;
 	gameProcess.setWorkingDirectory(installPath);
 	gameProcess.startDetached(processPath, m_passThroughCommandlineArguments);
+}
+
+void D2BlockApplication::Sleep(const quint32& ms)
+{
+#ifdef Q_OS_WIN
+    Sleep(uint(ms));
+#else
+    struct timespec ts = { ms / 1000, (ms % 1000) * 1000 * 1000 };
+    nanosleep(&ts, NULL);
+#endif
 }

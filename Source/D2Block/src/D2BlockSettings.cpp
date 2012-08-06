@@ -2,14 +2,14 @@
 #include "D2BlockSettings.h"
 
 D2BlockSettings::D2BlockSettings():
-QSettings(),
-m_iniFileName(QCoreApplication::applicationDirPath() + "/d2block.ini"),
-m_serverString("Server"),
-m_revisionFileString("RevisionFile"),
-m_ignorelistFileString("IgnorelistFile"),
-m_launchTargetString("LaunchTarget"),
-m_localRevisionString("LocalRevision"),
-m_applicationSettings(m_iniFileName, QSettings::IniFormat)
+	QSettings(),
+	m_iniFileName(QCoreApplication::applicationDirPath() + "/d2block.ini"),
+	m_serverString("Server"),
+	m_revisionFileString("RevisionFile"),
+	m_ignorelistFileString("IgnorelistFile"),
+	m_launchTargetString("LaunchTarget"),
+	m_localRevisionString("LocalRevision"),
+	m_applicationSettings(m_iniFileName, QSettings::IniFormat)
 {
 }
 

@@ -1,8 +1,9 @@
 #include "StdAfx.h"
 #include "D2BlockWindow.h"
+#include "D2BlockApplication.h"
 
 D2BlockWindow::D2BlockWindow(QWidget *parent, Qt::WFlags flags):
-QMainWindow(parent, flags)
+	QMainWindow(parent, flags)
 {
 	setWindowFlags(Qt::WindowCloseButtonHint);
 	ui.setupUi(this);
@@ -40,4 +41,15 @@ void D2BlockWindow::on_setFilePathText(const QString& path)
 void D2BlockWindow::on_setProgressTitle(const QString& text)
 {
 	ui.progressTitle->setText(text);
+}
+
+void D2BlockWindow::on_diablo2NotInstalled()
+{
+	ui.progressBar->hide();
+	ui.filePath->hide();
+	ui.progressTitle->setText("Diablo II Is Not Installed");
+
+	qApp->processEvents();
+
+    D2BlockApplication::Sleep(static_cast<quint32>(3000));
 }

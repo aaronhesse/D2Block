@@ -3,6 +3,10 @@
 #include <QtGui/QApplication>
 #include <QStringList>
 
+#ifdef Q_OS_WIN
+#include <windows.h>
+#endif
+
 class D2BlockApplication : public QApplication
 {
 	Q_OBJECT
@@ -11,6 +15,8 @@ public:
 
 	D2BlockApplication(int argc, char *argv[]);
 	~D2BlockApplication();
+
+	static void Sleep(const quint32& ms);
 
 public slots:
 

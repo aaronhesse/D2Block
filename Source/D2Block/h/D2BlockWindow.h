@@ -20,6 +20,7 @@ public slots:
 	void on_updateProgressBar(const qint32& amount);
 	void on_setProgressTitle(const QString& text);
 	void on_setFilePathText(const QString& text);
+	void on_diablo2NotInstalled();
 
 private:
 

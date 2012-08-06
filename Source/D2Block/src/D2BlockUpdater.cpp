@@ -4,13 +4,13 @@
 #include "D2BlockSettings.h"
 
 D2BlockUpdater::D2BlockUpdater():
-m_localRevision(0),
-m_remoteRevision(0),
-m_ignoreListOutOfDate(false),
-m_ignorelistBakFile("ignorelist.bak"),
-m_ignorelistUpdatedFile("ignorelist.updated"),
-m_d2blockStartBlock("!**D2BLOCK BEGIN**"),
-m_d2blockEndBlock("!**D2BLOCK END**")
+	m_ignorelistBakFile("ignorelist.bak"),
+	m_ignorelistUpdatedFile("ignorelist.updated"),
+	m_d2blockStartBlock("!**D2BLOCK BEGIN**"),
+	m_d2blockEndBlock("!**D2BLOCK END**"),
+	m_localRevision(0),
+	m_remoteRevision(0),
+	m_ignoreListOutOfDate(false)
 {
 }
 
@@ -20,10 +20,20 @@ D2BlockUpdater::~D2BlockUpdater()
 
 void D2BlockUpdater::UpdateIgnoreList()
 {
+	ProcessRegistryInformation();
+
+	if (!IsDiablo2Installed())
+		emit diablo2NotInstalled();
+
 	if (IgnoreListIsOutOfDate())
 		UpdateIgnoreListFile();
 
 	emit updaterComplete();
+}
+
+bool D2BlockUpdater::IsDiablo2Installed()
+{
+	return (m_gamePath.isEmpty()) ? false : true;
 }
 
 void D2BlockUpdater::ProcessRegistryInformation()
@@ -56,7 +66,6 @@ void D2BlockUpdater::ProcessVersionFile()
 
 bool D2BlockUpdater::IgnoreListIsOutOfDate()
 {
-	ProcessRegistryInformation();
 	ProcessVersionFile();
 
 	return m_ignoreListOutOfDate;
