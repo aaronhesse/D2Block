@@ -1,6 +1,7 @@
 #pragma once
 
 #include <QtGui/QMainWindow>
+#include <QMenuBar>
 #include "ui_d2block.h"
 
 class D2BlockWindow : public QMainWindow
@@ -25,4 +26,8 @@ public slots:
 private:
 
 	Ui::D2BlockClass ui;
+
+	QMenuBar* m_menuBar;
+	QMenu*    m_menu;
+	QAction*  m_setGameInstallPathAction;
 };

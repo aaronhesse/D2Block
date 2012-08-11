@@ -23,12 +23,14 @@ void D2BlockUpdater::UpdateIgnoreList()
 	ProcessRegistryInformation();
 
 	if (!IsDiablo2Installed())
+	{
 		emit diablo2NotInstalled();
-
-	if (IgnoreListIsOutOfDate())
-		UpdateIgnoreListFile();
-
-	emit updaterComplete();
+	}
+	else if (IgnoreListIsOutOfDate())
+	{
+        	UpdateIgnoreListFile();
+        	emit updaterComplete();
+	}
 }
 
 bool D2BlockUpdater::IsDiablo2Installed()

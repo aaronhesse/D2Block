@@ -3,23 +3,29 @@
 #include "D2BlockApplication.h"
 
 D2BlockWindow::D2BlockWindow(QWidget *parent, Qt::WFlags flags):
-	QMainWindow(parent, flags)
+    QMainWindow(parent, flags),
+    m_menuBar(new QMenuBar(0)),
+    m_menu(new QMenu()),
+    m_setGameInstallPathAction(new QAction("Set Diablo II InstallPath", this))
 {
-	setWindowFlags(Qt::WindowCloseButtonHint);
+    setWindowFlags(Qt::CustomizeWindowHint | Qt::WindowCloseButtonHint);
 	ui.setupUi(this);
 	ui.progressBar->setValue(0);
 	ui.filePath->setText("");
+
+    m_setGameInstallPathAction->setMenuRole(QAction::ApplicationSpecificRole);
+    m_menu->addAction(m_setGameInstallPathAction);
+    m_menuBar->addMenu(m_menu);
 }
 
 D2BlockWindow::~D2BlockWindow()
 {
-
 }
 
 void D2BlockWindow::show()
 {
-	setFixedSize(width(), height());
-	QMainWindow::show();
+    setFixedSize(width(), height());
+    QMainWindow::show();
 }
 
 void D2BlockWindow::on_updateProgressBar(const qint32& amount)
@@ -46,10 +52,8 @@ void D2BlockWindow::on_setProgressTitle(const QString& text)
 void D2BlockWindow::on_diablo2NotInstalled()
 {
 	ui.progressBar->hide();
-	ui.filePath->hide();
+	ui.filePath->setText("Please install Diablo II or set the Installation Path.");
 	ui.progressTitle->setText("Diablo II Is Not Installed");
 
 	qApp->processEvents();
-
-    D2BlockApplication::Sleep(static_cast<quint32>(3000));
 }
