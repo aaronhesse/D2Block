@@ -19,9 +19,9 @@ void D2BlockApplication::ProcessCommandlineArguments()
     // Skip the first argument though because that's the fully qualified path of this process.
 
     QStringList arguments = QCoreApplication::arguments();
-    foreach(QString arg, arguments)
+    foreach (QString arg, arguments)
     {
-        if(arg.compare(arguments.at(0)) == 0)
+        if (arg.compare(arguments.at(0)) == 0)
             continue;
 
         m_passThroughCommandlineArguments.push_back(arg);
@@ -77,7 +77,7 @@ void D2BlockApplication::LaunchLaunchTarget()
         filePathText = processPath;
     }
 
-    foreach(QString argument, m_passThroughCommandlineArguments)
+    foreach (QString argument, m_passThroughCommandlineArguments)
         filePathText.append(" " + argument);
 
     emit setProgressTitle("Launching Launch Target...");

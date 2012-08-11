@@ -26,20 +26,21 @@ D2BlockWindow::~D2BlockWindow()
 void D2BlockWindow::show()
 {
     setFixedSize(width(), height());
+    setGeometry(QStyle::alignedRect(Qt::LeftToRight, Qt::AlignCenter, this->size(), qApp->desktop()->availableGeometry()));
     QMainWindow::show();
 }
 
 void D2BlockWindow::on_chooseGameInstallPath()
 {
-    QString directory;
+    QString chosenDirectory;
     QFileDialog directoryDialog(this);
     directoryDialog.setFileMode(QFileDialog::Directory);
     directoryDialog.setOption(QFileDialog::ShowDirsOnly, true);
 
     if (directoryDialog.exec())
-        directory = directoryDialog.selectedFiles()[0];
+        chosenDirectory = directoryDialog.selectedFiles()[0];
 
-    emit setGameInstallPath(directory);
+    emit setGameInstallPath(chosenDirectory);
 }
 
 void D2BlockWindow::on_updateProgressBar(const qint32& amount)
@@ -66,8 +67,10 @@ void D2BlockWindow::on_setProgressTitle(const QString& text)
 void D2BlockWindow::on_diablo2NotInstalled()
 {
     ui.progressBar->hide();
-    ui.filePath->setText("Please install Diablo II or set the Installation Path.");
+    ui.filePath->setText("Please Install Diablo II or <a href=\"dummylink\">Set the Installation Path</a>.");
     ui.progressTitle->setText("Diablo II Is Not Installed");
+
+    QObject::connect(ui.filePath, SIGNAL(linkActivated(QString)), this, SLOT(on_chooseGameInstallPath()));
 
     qApp->processEvents();
 }

@@ -24,8 +24,8 @@ public slots:
 
     void on_setProgressBar(const qint32& value);
     void on_updateProgressBar(const qint32& amount);
-    void on_setProgressTitle(const QString& text);
-    void on_setFilePathText(const QString& text);
+    void on_setProgressTitle(const QString&);
+    void on_setFilePathText(const QString&);
     void on_diablo2NotInstalled();
     void on_chooseGameInstallPath();
 

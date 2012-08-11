@@ -33,6 +33,6 @@ private:
 signals:
 
     void setProgressBar(const qint32& value);
-    void setFilePathText(const QString& text);
-    void setProgressTitle(const QString& text);
+    void setFilePathText(const QString&);
+    void setProgressTitle(const QString&);
 };

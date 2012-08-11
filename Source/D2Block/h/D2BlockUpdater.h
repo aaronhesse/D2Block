@@ -47,7 +47,7 @@ signals:
     void diablo2NotInstalled();
     void updaterComplete();
     void updateProgressBar(const qint32& amount);
-    void setFilePathText(const QString& path);
+    void setFilePathText(const QString&);
 
 public slots:
 

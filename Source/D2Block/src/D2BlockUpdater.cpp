@@ -118,7 +118,7 @@ bool D2BlockUpdater::MergeIgnoreLists()
     QFile bakFile(m_gamePath + m_ignorelistBakFile);
     if (bakFile.exists())
     {
-        if(!bakFile.open(QIODevice::ReadOnly | QIODevice::Text))
+        if (!bakFile.open(QIODevice::ReadOnly | QIODevice::Text))
             return false;
 
         // Look for the sections of the file to ignore. Grab all of the other lines.
@@ -145,10 +145,10 @@ bool D2BlockUpdater::MergeIgnoreLists()
 
     // Then add all the user sections of the file to the updated file.
     QFile updateFile(m_gamePath + m_ignorelistUpdatedFile);
-    if(!updateFile.open(QIODevice::Append | QIODevice::Text))
+    if (!updateFile.open(QIODevice::Append | QIODevice::Text))
         return false;
 
-    foreach(QString entry, userIgnoreListData)
+    foreach (QString entry, userIgnoreListData)
     {
         updateFile.write(entry.toAscii());
     }
