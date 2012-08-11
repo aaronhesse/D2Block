@@ -17,6 +17,7 @@ public:
     const QString RevisionFile() const;
     const QString IgnorelistFile() const;
     const QString LaunchTarget() const;
+    const QString GameInstallPath() const;
     const qint32 LocalRevision() const;
 
     void setServer(const QString& server);
@@ -24,6 +25,7 @@ public:
     void setIgnorelistFile(const QString& file);
     void setLaunchTarget(const QString& target);
     void setLocalRevision(const qint32& revision);
+    void setGameInstallPath(const QString& path);
 
 private:
 
@@ -34,6 +36,7 @@ private:
     const QString m_ignorelistFileString;
     const QString m_launchTargetString;
     const QString m_localRevisionString;
+    const QString m_gameInstallPathString;
 
     QSettings m_applicationSettings;
 };

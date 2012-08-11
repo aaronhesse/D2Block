@@ -9,21 +9,22 @@ QT += network
 
 TARGET = D2Block
 TEMPLATE = app
+ICON = Resources/d2block.icns
 
 INCLUDEPATH += h
 INCLUDEPATH += src
 
 SOURCES += src/main.cpp\
-           src/D2BlockWindow.cpp\
-           src/D2BlockApplication.cpp\
-           src/D2BlockDownloader.cpp\
-           src/D2BlockSettings.cpp\
-           src/D2BlockUpdater.cpp
+	   src/D2BlockWindow.cpp\
+	   src/D2BlockApplication.cpp\
+	   src/D2BlockDownloader.cpp\
+	   src/D2BlockSettings.cpp\
+	   src/D2BlockUpdater.cpp
 
 HEADERS += h/D2BlockWindow.h\
-           h/D2BlockApplication.h\
-           h/D2BlockDownloader.h\
-           h/D2BlockSettings.h\
-           h/D2BlockUpdater.h
+	   h/D2BlockApplication.h\
+	   h/D2BlockDownloader.h\
+	   h/D2BlockSettings.h\
+	   h/D2BlockUpdater.h
 
-FORMS   += d2block.ui
+FORMS   += D2Block.ui

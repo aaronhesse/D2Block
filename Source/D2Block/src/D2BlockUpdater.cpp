@@ -46,8 +46,13 @@ void D2BlockUpdater::ProcessRegistryInformation()
     m_updateFile     = settings.RevisionFile();
     m_ignorelistFile = settings.IgnorelistFile();
     m_localRevision  = settings.LocalRevision();
+    m_gamePath       = settings.GameInstallPath();
 
-    m_gamePath = QSettings("Blizzard Entertainment", "Diablo II").value("InstallPath").toString();
+#if defined(Q_OS_WIN)
+    // If the ini file doesn't contain the game's installPath, then read it from the registry.
+    if (m_gamePath.isEmpty())
+        m_gamePath = QSettings("Blizzard Entertainment", "Diablo II").value("InstallPath").toString();
+#endif
 
     emit setFilePathText(m_gamePath + m_ignorelistFile);
     emit updateProgressBar(20);
@@ -56,6 +61,9 @@ void D2BlockUpdater::ProcessRegistryInformation()
 void D2BlockUpdater::on_setGameInstallPath(const QString& installPath)
 {
     m_gamePath = installPath;
+
+    D2BlockSettings settings;
+    settings.setGameInstallPath(m_gamePath);
 }
 
 void D2BlockUpdater::ProcessVersionFile()

@@ -9,6 +9,7 @@ D2BlockSettings::D2BlockSettings():
     m_ignorelistFileString("IgnorelistFile"),
     m_launchTargetString("LaunchTarget"),
     m_localRevisionString("LocalRevision"),
+    m_gameInstallPathString("GameInstallPath"),
     m_applicationSettings(m_iniFileName, QSettings::IniFormat)
 {
 }
@@ -47,6 +48,11 @@ const qint32 D2BlockSettings::LocalRevision() const
     return m_applicationSettings.value(m_localRevisionString).toInt();
 }
 
+const QString D2BlockSettings::GameInstallPath() const
+{
+    return m_applicationSettings.value(m_gameInstallPathString).toString();
+}
+
 void D2BlockSettings::setServer(const QString& server)
 {
     m_applicationSettings.setValue(m_serverString, server);
@@ -70,4 +76,9 @@ void D2BlockSettings::setLaunchTarget(const QString& target)
 void D2BlockSettings::setLocalRevision(const qint32& revision)
 {
     m_applicationSettings.setValue(m_localRevisionString, revision);
+}
+
+void D2BlockSettings::setGameInstallPath(const QString& path)
+{
+    m_applicationSettings.setValue(m_gameInstallPathString, path);
 }
