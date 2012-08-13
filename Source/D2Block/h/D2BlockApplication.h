@@ -16,8 +16,6 @@ public:
     D2BlockApplication(int argc, char *argv[]);
     ~D2BlockApplication();
 
-    static void Sleep(const quint32& ms);
-
 public slots:
 
     void on_updateComplete();
