@@ -88,13 +88,3 @@ void D2BlockApplication::LaunchLaunchTarget()
     gameProcess.setWorkingDirectory(installPath);
     gameProcess.startDetached(processPath, m_passThroughCommandlineArguments);
 }
-
-void D2BlockApplication::Sleep(const quint32& ms)
-{
-#ifdef Q_OS_WIN
-    Sleep(uint(ms));
-#else
-    struct timespec ts = { ms / 1000, (ms % 1000) * 1000 * 1000 };
-    nanosleep(&ts, NULL);
-#endif
-}

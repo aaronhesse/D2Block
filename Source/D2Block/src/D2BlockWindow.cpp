@@ -38,7 +38,7 @@ void D2BlockWindow::on_chooseGameInstallPath()
     directoryDialog.setOption(QFileDialog::ShowDirsOnly, true);
 
     if (directoryDialog.exec())
-        chosenDirectory = directoryDialog.selectedFiles()[0];
+        chosenDirectory = directoryDialog.selectedFiles()[0].append("/");
 
     emit setGameInstallPath(chosenDirectory);
 }

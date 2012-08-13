@@ -25,12 +25,14 @@ void D2BlockUpdater::UpdateIgnoreList()
     if (!IsDiablo2Installed())
     {
         emit diablo2NotInstalled();
+		return;
     }
     else if (IgnoreListIsOutOfDate())
     {
         UpdateIgnoreListFile();
-        emit updaterComplete();
     }
+
+	emit updaterComplete();
 }
 
 bool D2BlockUpdater::IsDiablo2Installed()
@@ -64,6 +66,8 @@ void D2BlockUpdater::on_setGameInstallPath(const QString& installPath)
 
     D2BlockSettings settings;
     settings.setGameInstallPath(m_gamePath);
+
+	UpdateIgnoreList();
 }
 
 void D2BlockUpdater::ProcessVersionFile()
