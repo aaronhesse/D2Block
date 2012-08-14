@@ -34,13 +34,10 @@ void D2BlockApplication::ConfigureSettings() const
 
     if (!QFile::exists(settings.iniFileName()))
     {
-        const QString gamePath = QSettings("Blizzard Entertainment", "Diablo II").value("GamePath").toString();
-
         settings.setServer("cloud.github.com/downloads/aaronhesse/d2block");
         settings.setRevisionFile("revision.txt");
         settings.setIgnorelistFile("ignorelist");
         settings.setLocalRevision(0);
-        settings.setLaunchTarget(gamePath);
     }
 }
 
@@ -77,6 +74,10 @@ void D2BlockApplication::LaunchLaunchTarget()
         QSettings gameSettings("Blizzard Entertainment", "Diablo II");
         installPath  = gameSettings.value("InstallPath").toString();
         processPath  = gameSettings.value("GamePath").toString();
+
+		if (processPath.isEmpty())
+			processPath = installPath.append("Diablo II.exe");
+
         filePathText = processPath;
 #elif defined(Q_OS_MAC)
         // QSettings objects don't properly support reading .prefs files, which Diablo II uses.
@@ -94,7 +95,6 @@ void D2BlockApplication::LaunchLaunchTarget()
         filePathText.append(" " + argument);
 
     emit setFilePathText(filePathText);
-    QCoreApplication::processEvents();
 
     QProcess gameProcess;
     gameProcess.setWorkingDirectory(installPath);
