@@ -65,11 +65,8 @@ void D2BlockUpdater::ProcessRegistryInformation()
 
 void D2BlockUpdater::on_setGameInstallPath(const QString& installPath)
 {
-    m_gamePath = installPath;
-
-    D2BlockSettings settings;
-    settings.setGameInstallPath(m_gamePath);
-
+	m_gamePath = installPath;
+    D2BlockSettings().setGameInstallPath(m_gamePath);
 	UpdateIgnoreList();
 }
 
@@ -89,7 +86,6 @@ void D2BlockUpdater::ProcessVersionFile()
 bool D2BlockUpdater::IgnoreListIsOutOfDate()
 {
     ProcessVersionFile();
-
     return m_ignoreListOutOfDate;
 }
 
