@@ -53,7 +53,7 @@ void D2BlockApplication::on_updateComplete()
 
 void D2BlockApplication::LaunchLaunchTarget()
 {
-    // If no launch target key/value is found, then we use Diablo II.exe as a the launch target.
+    // If no launch target key/value is found, then we use Diablo II.exe/app as the launch target.
     // Otherwise use the user-defined target.
 
     QString processPath;
