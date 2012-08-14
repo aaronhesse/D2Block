@@ -28,6 +28,7 @@ public slots:
     void on_setFilePathText(const QString&);
     void on_diablo2NotInstalled();
     void on_chooseGameInstallPath();
+    void on_showProgressBar();
 
 private:
 

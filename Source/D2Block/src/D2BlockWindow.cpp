@@ -47,30 +47,40 @@ void D2BlockWindow::on_updateProgressBar(const qint32& amount)
 {
     qint32 currentValue = ui.progressBar->value();
     ui.progressBar->setValue(currentValue + amount);
+    qApp->processEvents();
 }
 
 void D2BlockWindow::on_setProgressBar(const qint32& value)
 {
     ui.progressBar->setValue(value);
+    qApp->processEvents();
 }
 
 void D2BlockWindow::on_setFilePathText(const QString& path)
 {
     ui.filePath->setText(path);
+    qApp->processEvents();
 }
 
 void D2BlockWindow::on_setProgressTitle(const QString& text)
 {
     ui.progressTitle->setText(text);
+    qApp->processEvents();
 }
 
 void D2BlockWindow::on_diablo2NotInstalled()
 {
     ui.progressBar->hide();
-    ui.filePath->setText("Please Install Diablo II or <a href=\"dummylink\">Set the Installation Path</a>.");
-    ui.progressTitle->setText("Diablo II Is Not Installed");
+    ui.filePath->setText(tr("Please Install Diablo II or <a href=\"dummylink\">Set the Installation Path</a>."));
+    ui.progressTitle->setText(tr("Diablo II Is Not Installed"));
 
     QObject::connect(ui.filePath, SIGNAL(linkActivated(QString)), this, SLOT(on_chooseGameInstallPath()));
 
+    qApp->processEvents();
+}
+
+void D2BlockWindow::on_showProgressBar()
+{
+    ui.progressBar->show();
     qApp->processEvents();
 }

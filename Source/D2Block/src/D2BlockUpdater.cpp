@@ -20,19 +20,22 @@ D2BlockUpdater::~D2BlockUpdater()
 
 void D2BlockUpdater::UpdateIgnoreList()
 {
+    emit setProgressTitle(tr("Updating Diablo II Ignorelist.."));
+    emit showProgressBar();
+
     ProcessRegistryInformation();
 
     if (!IsDiablo2Installed())
     {
         emit diablo2NotInstalled();
-		return;
+        return;
     }
     else if (IgnoreListIsOutOfDate())
     {
         UpdateIgnoreListFile();
     }
 
-	emit updaterComplete();
+    emit updaterComplete();
 }
 
 bool D2BlockUpdater::IsDiablo2Installed()

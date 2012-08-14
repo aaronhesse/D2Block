@@ -1,6 +1,7 @@
 #pragma once
 
 #include <QObject>
+#include "ui_d2block.h"
 
 class D2BlockUpdater : public QObject
 {
@@ -48,6 +49,8 @@ signals:
     void updaterComplete();
     void updateProgressBar(const qint32& amount);
     void setFilePathText(const QString&);
+    void setProgressTitle(const QString&);
+    void showProgressBar();
 
 public slots:
 

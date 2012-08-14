@@ -60,6 +60,8 @@ void D2BlockApplication::LaunchLaunchTarget()
     QString installPath;
     QString filePathText;
 
+    emit setProgressTitle(tr("Launching Launch Target..."));
+
     const QString launchTargetPath = D2BlockSettings().LaunchTarget();
 
     if (!launchTargetPath.isEmpty())
@@ -71,16 +73,26 @@ void D2BlockApplication::LaunchLaunchTarget()
     }
     else
     {
+#if defined(Q_OS_WIN)
         QSettings gameSettings("Blizzard Entertainment", "Diablo II");
-        installPath = gameSettings.value("InstallPath").toString();
-        processPath = gameSettings.value("GamePath").toString();
+        installPath  = gameSettings.value("InstallPath").toString();
+        processPath  = gameSettings.value("GamePath").toString();
         filePathText = processPath;
+#elif defined(Q_OS_MAC)
+        // QSettings objects don't properly support reading .prefs files, which Diablo II uses.
+        // So we have to manually set the launchTarget here.
+        installPath  = D2BlockSettings().GameInstallPath();
+        processPath  = installPath;
+        processPath  = processPath.append("Diablo II (Carbon)");
+        filePathText = processPath;
+#endif
+        // Once we've defined what the processPath is we write it out to the .ini file for next time.
+        D2BlockSettings().setLaunchTarget(processPath);
     }
 
     foreach (QString argument, m_passThroughCommandlineArguments)
         filePathText.append(" " + argument);
 
-    emit setProgressTitle("Launching Launch Target...");
     emit setFilePathText(filePathText);
     QCoreApplication::processEvents();
 
