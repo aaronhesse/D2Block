@@ -12,10 +12,32 @@ D2BlockSettings::D2BlockSettings():
     m_gameInstallPathString("GameInstallPath"),
     m_applicationSettings(m_iniFileName, QSettings::IniFormat)
 {
+#if defined(Q_OS_WIN)
+
+    // For Windows we can read out the installPath from the registry upon construction.
+    // For Mac we have to have the user specify the path, so we handle that in the
+    // appropriate function.
+
+    QSettings gameSettings("Blizzard Entertainment", "Diablo II");
+    installPath  = gameSettings.value("InstallPath").toString();
+    processPath  = gameSettings.value("GamePath").toString();
+    setLaunchTarget(processPath);
+
+#endif
 }
 
 D2BlockSettings::~D2BlockSettings()
 {
+}
+
+D2BlockSettings* D2BlockSettings::getInstance()
+{
+    static D2BlockSettings* instance = 0;
+
+    if (!instance)
+        instance = new D2BlockSettings();
+
+    return instance;
 }
 
 const QString D2BlockSettings::iniFileName() const

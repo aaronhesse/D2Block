@@ -28,19 +28,19 @@ void D2BlockApplication::ProcessCommandlineArguments()
     }
 }
 
-void D2BlockApplication::ConfigureSettings() const
+void D2BlockApplication::ConfigureSettings()
 {
-    D2BlockSettings settings;
+    D2BlockSettings* settings = D2BlockSettings::getInstance();
 
-    if (!QFile::exists(settings.iniFileName()))
+    if (!QFile::exists(settings->iniFileName()))
     {
         const QString gamePath = QSettings("Blizzard Entertainment", "Diablo II").value("GamePath").toString();
 
-        settings.setServer("cloud.github.com/downloads/aaronhesse/d2block");
-        settings.setRevisionFile("revision.txt");
-        settings.setIgnorelistFile("ignorelist");
-        settings.setLocalRevision(0);
-        settings.setLaunchTarget(gamePath);
+        settings->setServer("cloud.github.com/downloads/aaronhesse/d2block");
+        settings->setRevisionFile("revision.txt");
+        settings->setIgnorelistFile("ignorelist");
+        settings->setLocalRevision(0);
+        settings->setLaunchTarget(gamePath);
     }
 }
 
@@ -53,50 +53,56 @@ void D2BlockApplication::on_updateComplete()
 
 void D2BlockApplication::LaunchLaunchTarget()
 {
+    emit setProgressTitle(tr("Launching Launch Target..."));
+
+#if defined(Q_OS_WIN)
+    LaunchWindowsLaunchTarget();
+#elif defined(Q_OS_MAC)
+    LaunchMacLaunchTarget();
+#endif
+
+}
+
+void D2BlockApplication::LaunchWindowsLaunchTarget()
+{
     // If no launch target key/value is found, then we use Diablo II.exe/app as the launch target.
     // Otherwise use the user-defined target.
 
-    QString processPath;
-    QString installPath;
-    QString filePathText;
-
-    emit setProgressTitle(tr("Launching Launch Target..."));
-
-    const QString launchTargetPath = D2BlockSettings().LaunchTarget();
-
-    if (!launchTargetPath.isEmpty())
-    {
-        processPath = launchTargetPath;
-        installPath = QDir::toNativeSeparators(launchTargetPath);
-        installPath.truncate(installPath.lastIndexOf(QDir::separator()));
-        filePathText = launchTargetPath;
-    }
-    else
-    {
-#if defined(Q_OS_WIN)
-        QSettings gameSettings("Blizzard Entertainment", "Diablo II");
-        installPath  = gameSettings.value("InstallPath").toString();
-        processPath  = gameSettings.value("GamePath").toString();
-        filePathText = processPath;
-#elif defined(Q_OS_MAC)
-        // QSettings objects don't properly support reading .prefs files, which Diablo II uses.
-        // So we have to manually set the launchTarget here.
-        installPath  = D2BlockSettings().GameInstallPath();
-        processPath  = installPath;
-        processPath  = processPath.append("Diablo II (Carbon)");
-        filePathText = processPath;
-#endif
-        // Once we've defined what the processPath is we write it out to the .ini file for next time.
-        D2BlockSettings().setLaunchTarget(processPath);
-    }
+    const QString launchTargetPath = D2BlockSettings::getInstance()->LaunchTarget();
+    const QString processPath  = launchTargetPath;
+    QString filePathText = launchTargetPath;
+    QString installPath  = QDir::toNativeSeparators(launchTargetPath);
+    installPath.truncate(installPath.lastIndexOf(QDir::separator()));
 
     foreach (QString argument, m_passThroughCommandlineArguments)
         filePathText.append(" " + argument);
 
     emit setFilePathText(filePathText);
-    QCoreApplication::processEvents();
 
     QProcess gameProcess;
     gameProcess.setWorkingDirectory(installPath);
     gameProcess.startDetached(processPath, m_passThroughCommandlineArguments);
+}
+
+void D2BlockApplication::LaunchMacLaunchTarget()
+{
+    // If no launch target key/value is found, then we use Diablo II.exe/app as the launch target.
+    // Otherwise use the user-defined target.
+
+    const QString launchTargetPath = D2BlockSettings::getInstance()->LaunchTarget();
+
+    QString processPath  = launchTargetPath;
+    QString filePathText = launchTargetPath;
+    QString installPath  = QDir::toNativeSeparators(launchTargetPath);
+    installPath.truncate(installPath.lastIndexOf(QDir::separator()));
+
+    foreach (QString argument, m_passThroughCommandlineArguments)
+    {
+        filePathText.append(" " + argument);
+        processPath.append(" " + argument);
+    }
+
+    emit setFilePathText(filePathText);
+
+    system(QString("open \"" + processPath + "\"").toAscii());
 }

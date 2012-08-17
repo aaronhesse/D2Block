@@ -25,8 +25,10 @@ private:
     QStringList m_passThroughCommandlineArguments;
 
     void ProcessCommandlineArguments();
-    void ConfigureSettings() const;
+    void ConfigureSettings();
     void LaunchLaunchTarget();
+    void LaunchMacLaunchTarget();
+    void LaunchWindowsLaunchTarget();
 
 signals:
 

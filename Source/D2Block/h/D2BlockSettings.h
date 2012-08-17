@@ -8,7 +8,6 @@ class D2BlockSettings : public QSettings
 
 public:
 
-    D2BlockSettings();
     ~D2BlockSettings();
 
     const QString iniFileName() const;
@@ -27,7 +26,11 @@ public:
     void setLocalRevision(const qint32& revision);
     void setGameInstallPath(const QString& path);
 
+    static D2BlockSettings* getInstance();
+
 private:
+
+    D2BlockSettings();
 
     const QString m_iniFileName;
 

@@ -25,6 +25,7 @@ HEADERS += h/D2BlockWindow.h\
 	   h/D2BlockApplication.h\
 	   h/D2BlockDownloader.h\
 	   h/D2BlockSettings.h\
-	   h/D2BlockUpdater.h
+           h/D2BlockUpdater.h\
+           h/stdafx.h
 
 FORMS   += D2Block.ui

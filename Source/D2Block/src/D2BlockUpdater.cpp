@@ -45,18 +45,20 @@ bool D2BlockUpdater::IsDiablo2Installed()
 
 void D2BlockUpdater::ProcessRegistryInformation()
 {
-    D2BlockSettings settings;
+    D2BlockSettings* settings = D2BlockSettings::getInstance();
 
-    m_httpServer     = settings.Server();
-    m_updateFile     = settings.RevisionFile();
-    m_ignorelistFile = settings.IgnorelistFile();
-    m_localRevision  = settings.LocalRevision();
-    m_gamePath       = settings.GameInstallPath();
+    m_httpServer     = settings->Server();
+    m_updateFile     = settings->RevisionFile();
+    m_ignorelistFile = settings->IgnorelistFile();
+    m_localRevision  = settings->LocalRevision();
+    m_gamePath       = settings->GameInstallPath();
 
 #if defined(Q_OS_WIN)
+
     // If the ini file doesn't contain the game's installPath, then read it from the registry.
     if (m_gamePath.isEmpty())
         m_gamePath = QSettings("Blizzard Entertainment", "Diablo II").value("InstallPath").toString();
+
 #endif
 
     emit setFilePathText(m_gamePath + m_ignorelistFile);
@@ -67,8 +69,17 @@ void D2BlockUpdater::on_setGameInstallPath(const QString& installPath)
 {
     m_gamePath = installPath;
 
-    D2BlockSettings settings;
-    settings.setGameInstallPath(m_gamePath);
+    D2BlockSettings* settings = D2BlockSettings::getInstance();
+    settings->setGameInstallPath(m_gamePath);
+
+#if defined(Q_OS_MAC)
+
+    // QSettings objects don't properly support reading .prefs files, which Diablo II uses.
+    // So we have to manually set the launchTarget here now that we know the installPath.
+
+    settings->setLaunchTarget(QString(settings->GameInstallPath() + "Diablo II (Carbon)"));
+
+#endif
 
 	UpdateIgnoreList();
 }
@@ -181,7 +192,7 @@ bool D2BlockUpdater::MergeIgnoreLists()
 
 void D2BlockUpdater::UpdateRevisionNumber() const
 {
-    D2BlockSettings().setLocalRevision(m_remoteRevision);
+    D2BlockSettings::getInstance()->setLocalRevision(m_remoteRevision);
 }
 
 void D2BlockUpdater::Cleanup() const

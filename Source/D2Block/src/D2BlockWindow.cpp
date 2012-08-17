@@ -38,9 +38,10 @@ void D2BlockWindow::on_chooseGameInstallPath()
     directoryDialog.setOption(QFileDialog::ShowDirsOnly, true);
 
     if (directoryDialog.exec())
+    {
         chosenDirectory = directoryDialog.selectedFiles()[0].append("/");
-
-    emit setGameInstallPath(chosenDirectory);
+        emit setGameInstallPath(chosenDirectory);
+    }
 }
 
 void D2BlockWindow::on_updateProgressBar(const qint32& amount)
