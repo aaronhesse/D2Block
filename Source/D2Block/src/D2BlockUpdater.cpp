@@ -100,7 +100,6 @@ void D2BlockUpdater::ProcessVersionFile()
 bool D2BlockUpdater::IgnoreListIsOutOfDate()
 {
     ProcessVersionFile();
-
     return m_ignoreListOutOfDate;
 }
 
