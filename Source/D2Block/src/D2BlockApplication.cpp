@@ -18,7 +18,7 @@ void D2BlockApplication::ProcessCommandlineArguments()
     // Iterate over the pass-through command-line arguments, store them in a class member QStringList
     // Skip the first argument though because that's the fully qualified path of this process.
 
-    QStringList arguments = QCoreApplication::arguments();
+    const QStringList arguments = QCoreApplication::arguments();
     foreach (QString arg, arguments)
     {
         if (arg.compare(arguments.at(0)) == 0)

@@ -18,10 +18,7 @@ D2BlockSettings::D2BlockSettings():
     // For Mac we have to have the user specify the path, so we handle that in the
     // appropriate function.
 
-    QSettings gameSettings("Blizzard Entertainment", "Diablo II");
-    installPath  = gameSettings.value("InstallPath").toString();
-    processPath  = gameSettings.value("GamePath").toString();
-    setLaunchTarget(processPath);
+    setLaunchTarget(QSettings("Blizzard Entertainment", "Diablo II").value("GamePath").toString());
 
 #endif
 }

@@ -46,7 +46,7 @@ void D2BlockWindow::on_chooseGameInstallPath()
 
 void D2BlockWindow::on_updateProgressBar(const qint32& amount)
 {
-    qint32 currentValue = ui.progressBar->value();
+    const qint32 currentValue = ui.progressBar->value();
     ui.progressBar->setValue(currentValue + amount);
     qApp->processEvents();
 }

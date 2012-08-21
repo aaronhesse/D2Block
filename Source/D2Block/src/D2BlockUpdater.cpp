@@ -8,7 +8,6 @@ D2BlockUpdater::D2BlockUpdater():
     m_ignorelistUpdatedFile("ignorelist.updated"),
     m_d2blockStartBlock("!**D2BLOCK BEGIN**"),
     m_d2blockEndBlock("!**D2BLOCK END**"),
-    m_localRevision(0),
     m_remoteRevision(0),
     m_ignoreListOutOfDate(false)
 {
@@ -40,37 +39,28 @@ void D2BlockUpdater::UpdateIgnoreList()
 
 bool D2BlockUpdater::IsDiablo2Installed()
 {
-    return (m_gamePath.isEmpty()) ? false : true;
+    return (D2BlockSettings::getInstance()->GameInstallPath().isEmpty()) ? false : true;
 }
 
 void D2BlockUpdater::ProcessRegistryInformation()
 {
     D2BlockSettings* settings = D2BlockSettings::getInstance();
 
-    m_httpServer     = settings->Server();
-    m_updateFile     = settings->RevisionFile();
-    m_ignorelistFile = settings->IgnorelistFile();
-    m_localRevision  = settings->LocalRevision();
-    m_gamePath       = settings->GameInstallPath();
-
 #if defined(Q_OS_WIN)
 
-    // If the ini file doesn't contain the game's installPath, then read it from the registry.
-    if (m_gamePath.isEmpty())
-        m_gamePath = QSettings("Blizzard Entertainment", "Diablo II").value("InstallPath").toString();
+    if (settings->GameInstallPath().isEmpty())
+        settings->setGameInstallPath(QSettings("Blizzard Entertainment", "Diablo II").value("InstallPath").toString());
 
 #endif
 
-    emit setFilePathText(m_gamePath + m_ignorelistFile);
+    emit setFilePathText(settings->GameInstallPath() + settings->IgnorelistFile());
     emit updateProgressBar(20);
 }
 
 void D2BlockUpdater::on_setGameInstallPath(const QString& installPath)
 {
-    m_gamePath = installPath;
-
     D2BlockSettings* settings = D2BlockSettings::getInstance();
-    settings->setGameInstallPath(m_gamePath);
+    settings->setGameInstallPath(installPath);
 
 #if defined(Q_OS_MAC)
 
@@ -81,17 +71,19 @@ void D2BlockUpdater::on_setGameInstallPath(const QString& installPath)
 
 #endif
 
-	UpdateIgnoreList();
+    UpdateIgnoreList();
 }
 
 void D2BlockUpdater::ProcessVersionFile()
 {
-    const QString url = QString("http://%1/%2").arg(m_httpServer).arg(m_updateFile);
+    const D2BlockSettings* settings = D2BlockSettings::getInstance();
+
+    const QString url = QString("http://%1/%2").arg(settings->Server()).arg(settings->RevisionFile());
     const QByteArray fileData = D2BlockDownloader().DownloadFile(url);
 
     m_remoteRevision = atoi(fileData);
 
-    if (m_remoteRevision > m_localRevision)
+    if (m_remoteRevision > settings->LocalRevision())
         m_ignoreListOutOfDate = true;
 
     emit updateProgressBar(20);
@@ -122,8 +114,10 @@ void D2BlockUpdater::UpdateIgnoreListFile()
 
 bool D2BlockUpdater::DownloadUpdatedIgnoreListFile()
 {
-    const QString url = QString("http://%1/%2").arg(m_httpServer).arg(m_ignorelistFile);
-    const QString ignoreListUpdateFilePath = m_gamePath + m_ignorelistUpdatedFile;
+    const D2BlockSettings* settings = D2BlockSettings::getInstance();
+
+    const QString url = QString("http://%1/%2").arg(settings->Server()).arg(settings->IgnorelistFile());
+    const QString ignoreListUpdateFilePath = settings->GameInstallPath() + m_ignorelistUpdatedFile;
 
     const bool success = D2BlockDownloader().DownloadFileToDisk(url, ignoreListUpdateFilePath);
 
@@ -133,14 +127,20 @@ bool D2BlockUpdater::DownloadUpdatedIgnoreListFile()
 
 void D2BlockUpdater::BackupIgnoreListFile() const
 {
-    QFile::copy(m_gamePath + m_ignorelistFile, m_gamePath + m_ignorelistBakFile);
+    const D2BlockSettings* settings = D2BlockSettings::getInstance();
+    const QString gamePath = settings->GameInstallPath();
+
+    QFile::copy(gamePath + settings->IgnorelistFile(), gamePath + m_ignorelistBakFile);
 }
 
 bool D2BlockUpdater::MergeIgnoreLists()
 {
     QStringList userIgnoreListData;
 
-    QFile bakFile(m_gamePath + m_ignorelistBakFile);
+    const D2BlockSettings* settings = D2BlockSettings::getInstance();
+    const QString gamePath = settings->GameInstallPath();
+
+    QFile bakFile(gamePath + m_ignorelistBakFile);
     if (bakFile.exists())
     {
         if (!bakFile.open(QIODevice::ReadOnly | QIODevice::Text))
@@ -169,20 +169,18 @@ bool D2BlockUpdater::MergeIgnoreLists()
     }
 
     // Then add all the user sections of the file to the updated file.
-    QFile updateFile(m_gamePath + m_ignorelistUpdatedFile);
+    QFile updateFile(gamePath + m_ignorelistUpdatedFile);
     if (!updateFile.open(QIODevice::Append | QIODevice::Text))
         return false;
 
     foreach (QString entry, userIgnoreListData)
-    {
         updateFile.write(entry.toAscii());
-    }
 
     updateFile.close();
 
-    QFile::remove(m_gamePath + m_ignorelistFile);
-    QFile::remove(m_gamePath + m_ignorelistBakFile);
-    QFile::rename(m_gamePath + m_ignorelistUpdatedFile, m_gamePath + m_ignorelistFile);
+    QFile::remove(gamePath + settings->IgnorelistFile());
+    QFile::remove(gamePath + m_ignorelistBakFile);
+    QFile::rename(gamePath + m_ignorelistUpdatedFile, gamePath + settings->IgnorelistFile());
 
     emit updateProgressBar(20);
 
@@ -196,6 +194,8 @@ void D2BlockUpdater::UpdateRevisionNumber() const
 
 void D2BlockUpdater::Cleanup() const
 {
-    QFile::remove(m_gamePath + m_ignorelistUpdatedFile);
-    QFile::remove(m_gamePath + m_ignorelistBakFile);
+    const QString gamePath = D2BlockSettings::getInstance()->GameInstallPath();
+
+    QFile::remove(gamePath + m_ignorelistUpdatedFile);
+    QFile::remove(gamePath + m_ignorelistBakFile);
 }
