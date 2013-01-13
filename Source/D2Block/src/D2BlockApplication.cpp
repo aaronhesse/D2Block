@@ -79,8 +79,9 @@ void D2BlockApplication::LaunchWindowsLaunchTarget()
 
     emit setFilePathText(filePathText);
 
+	QDir::setCurrent(installPath);
+
     QProcess gameProcess;
-    gameProcess.setWorkingDirectory(installPath);
     gameProcess.startDetached(processPath, m_passThroughCommandlineArguments);
 }
 
