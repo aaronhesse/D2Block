@@ -36,7 +36,7 @@ void D2BlockApplication::ConfigureSettings()
     {
         const QString gamePath = QSettings("Blizzard Entertainment", "Diablo II").value("GamePath").toString();
 
-        settings->setServer("scourcritical.s3.amazonaws.com/D2Block/");
+        settings->setServer("scourcritical.s3.amazonaws.com/D2Block");
         settings->setRevisionFile("revision.txt");
         settings->setIgnorelistFile("ignorelist");
         settings->setLocalRevision(0);
