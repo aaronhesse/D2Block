@@ -41,12 +41,12 @@ signals:
 
     void diablo2NotInstalled();
     void updaterComplete();
-    void updateProgressBar(const qint32& amount);
+    void updateProgressBar(const qint32&);
     void setFilePathText(const QString&);
     void setProgressTitle(const QString&);
     void showProgressBar();
 
 public slots:
 
-    void on_setGameInstallPath(const QString& installPath);
+    void on_setGameInstallPath(const QString&);
 };

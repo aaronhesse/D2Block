@@ -42,6 +42,8 @@
     <OutDir Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(SolutionDir)$(Configuration)\</OutDir>
     <OutDir Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(SolutionDir)$(Configuration)\</OutDir>
     <IncludePath Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">.\h;$(IncludePath)</IncludePath>
+    <IncludePath Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">..\Logitech\LCDSDK\Src\LCDUI;..\Logitech\LCDSDK\Src;..\Logitech\LCDSDKCore\Src;$(IncludePath)</IncludePath>
+    <LibraryPath Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">..\Logitech\LCDSDK\Libs\x86;..\Logitech\LCDSDKCore\Libs\x86;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
@@ -63,7 +65,7 @@
       <OutputFile>$(SolutionDir)$(ConfigurationName)\$(ProjectName)$(TargetExt)</OutputFile>
       <AdditionalLibraryDirectories>$(QTDIR)\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalDependencies>qtmaind.lib;QtCored4.lib;QtGuid4.lib;QtNetworkd4.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>Msimg32.lib;Gdiplus.lib;qtmaind.lib;QtCored4.lib;QtGuid4.lib;QtNetworkd4.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <ProgramDatabaseFile>$(TargetDir)$(ConfigurationName)\$(TargetName).pdb</ProgramDatabaseFile>
     </Link>
   </ItemDefinitionGroup>
@@ -92,10 +94,80 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="..\Logitech\LCDSDK\Src\EZ_LCD.cpp">
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">NotUsing</PrecompiledHeader>
+    </ClCompile>
+    <ClCompile Include="..\Logitech\LCDSDK\Src\EZ_LCD_Page.cpp">
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">NotUsing</PrecompiledHeader>
+    </ClCompile>
+    <ClCompile Include="..\Logitech\LCDSDK\Src\LCDUI\LCDAnimatedBitmap.cpp">
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">NotUsing</PrecompiledHeader>
+    </ClCompile>
+    <ClCompile Include="..\Logitech\LCDSDK\Src\LCDUI\LCDBase.cpp">
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">NotUsing</PrecompiledHeader>
+    </ClCompile>
+    <ClCompile Include="..\Logitech\LCDSDK\Src\LCDUI\LCDBitmap.cpp">
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">NotUsing</PrecompiledHeader>
+    </ClCompile>
+    <ClCompile Include="..\Logitech\LCDSDK\Src\LCDUI\LCDCollection.cpp">
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">NotUsing</PrecompiledHeader>
+    </ClCompile>
+    <ClCompile Include="..\Logitech\LCDSDK\Src\LCDUI\LCDColorProgressBar.cpp">
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">NotUsing</PrecompiledHeader>
+    </ClCompile>
+    <ClCompile Include="..\Logitech\LCDSDK\Src\LCDUI\LCDColorText.cpp">
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">NotUsing</PrecompiledHeader>
+    </ClCompile>
+    <ClCompile Include="..\Logitech\LCDSDK\Src\LCDUI\LCDConnection.cpp">
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">NotUsing</PrecompiledHeader>
+    </ClCompile>
+    <ClCompile Include="..\Logitech\LCDSDK\Src\LCDUI\LCDGfxBase.cpp">
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">NotUsing</PrecompiledHeader>
+    </ClCompile>
+    <ClCompile Include="..\Logitech\LCDSDK\Src\LCDUI\LCDGfxColor.cpp">
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">NotUsing</PrecompiledHeader>
+    </ClCompile>
+    <ClCompile Include="..\Logitech\LCDSDK\Src\LCDUI\LCDGfxMono.cpp">
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">NotUsing</PrecompiledHeader>
+    </ClCompile>
+    <ClCompile Include="..\Logitech\LCDSDK\Src\LCDUI\LCDIcon.cpp">
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">NotUsing</PrecompiledHeader>
+    </ClCompile>
+    <ClCompile Include="..\Logitech\LCDSDK\Src\LCDUI\LCDOutput.cpp">
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">NotUsing</PrecompiledHeader>
+    </ClCompile>
+    <ClCompile Include="..\Logitech\LCDSDK\Src\LCDUI\LCDPage.cpp">
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">NotUsing</PrecompiledHeader>
+    </ClCompile>
+    <ClCompile Include="..\Logitech\LCDSDK\Src\LCDUI\LCDPaginateText.cpp">
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">NotUsing</PrecompiledHeader>
+    </ClCompile>
+    <ClCompile Include="..\Logitech\LCDSDK\Src\LCDUI\LCDPopup.cpp">
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">NotUsing</PrecompiledHeader>
+    </ClCompile>
+    <ClCompile Include="..\Logitech\LCDSDK\Src\LCDUI\LCDProgressBar.cpp">
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">NotUsing</PrecompiledHeader>
+    </ClCompile>
+    <ClCompile Include="..\Logitech\LCDSDK\Src\LCDUI\LCDScrollingText.cpp">
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">NotUsing</PrecompiledHeader>
+    </ClCompile>
+    <ClCompile Include="..\Logitech\LCDSDK\Src\LCDUI\LCDSkinnedProgressBar.cpp">
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">NotUsing</PrecompiledHeader>
+    </ClCompile>
+    <ClCompile Include="..\Logitech\LCDSDK\Src\LCDUI\LCDStreamingText.cpp">
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">NotUsing</PrecompiledHeader>
+    </ClCompile>
+    <ClCompile Include="..\Logitech\LCDSDK\Src\LCDUI\LCDText.cpp">
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">NotUsing</PrecompiledHeader>
+    </ClCompile>
+    <ClCompile Include="D2BlockLogitechLCD.cpp" />
     <ClCompile Include="GeneratedFiles\Debug\moc_D2BlockApplication.cpp">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
     </ClCompile>
     <ClCompile Include="GeneratedFiles\Debug\moc_D2BlockDownloader.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\Debug\moc_D2BlockLogitechLCD.cpp">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
     </ClCompile>
     <ClCompile Include="GeneratedFiles\Debug\moc_D2BlockSettings.cpp">
@@ -119,6 +191,9 @@
     <ClCompile Include="GeneratedFiles\Release\moc_D2BlockDownloader.cpp">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
     </ClCompile>
+    <ClCompile Include="GeneratedFiles\Release\moc_D2BlockLogitechLCD.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+    </ClCompile>
     <ClCompile Include="GeneratedFiles\Release\moc_D2BlockSettings.cpp">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
     </ClCompile>
@@ -140,6 +215,40 @@
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="..\Logitech\LCDSDK\Src\EZ_LCD.h" />
+    <ClInclude Include="..\Logitech\LCDSDK\Src\EZ_LCD_Defines.h" />
+    <ClInclude Include="..\Logitech\LCDSDK\Src\EZ_LCD_Page.h" />
+    <ClInclude Include="..\Logitech\LCDSDK\Src\LCDUI\LCDAnimatedBitmap.h" />
+    <ClInclude Include="..\Logitech\LCDSDK\Src\LCDUI\LCDBase.h" />
+    <ClInclude Include="..\Logitech\LCDSDK\Src\LCDUI\LCDBitmap.h" />
+    <ClInclude Include="..\Logitech\LCDSDK\Src\LCDUI\LCDCollection.h" />
+    <ClInclude Include="..\Logitech\LCDSDK\Src\LCDUI\LCDColorProgressBar.h" />
+    <ClInclude Include="..\Logitech\LCDSDK\Src\LCDUI\LCDColorText.h" />
+    <ClInclude Include="..\Logitech\LCDSDK\Src\LCDUI\LCDConnection.h" />
+    <ClInclude Include="..\Logitech\LCDSDK\Src\LCDUI\LCDGfxBase.h" />
+    <ClInclude Include="..\Logitech\LCDSDK\Src\LCDUI\LCDGfxColor.h" />
+    <ClInclude Include="..\Logitech\LCDSDK\Src\LCDUI\LCDGfxMono.h" />
+    <ClInclude Include="..\Logitech\LCDSDK\Src\LCDUI\LCDIcon.h" />
+    <ClInclude Include="..\Logitech\LCDSDK\Src\LCDUI\LCDOutput.h" />
+    <ClInclude Include="..\Logitech\LCDSDK\Src\LCDUI\LCDPage.h" />
+    <ClInclude Include="..\Logitech\LCDSDK\Src\LCDUI\LCDPaginateText.h" />
+    <ClInclude Include="..\Logitech\LCDSDK\Src\LCDUI\LCDPopup.h" />
+    <ClInclude Include="..\Logitech\LCDSDK\Src\LCDUI\LCDProgressBar.h" />
+    <ClInclude Include="..\Logitech\LCDSDK\Src\LCDUI\LCDScrollingText.h" />
+    <ClInclude Include="..\Logitech\LCDSDK\Src\LCDUI\LCDSkinnedProgressBar.h" />
+    <ClInclude Include="..\Logitech\LCDSDK\Src\LCDUI\LCDStreamingText.h" />
+    <ClInclude Include="..\Logitech\LCDSDK\Src\LCDUI\LCDText.h" />
+    <ClInclude Include="..\Logitech\LCDSDK\Src\LCDUI\LCDUI.h" />
+    <CustomBuild Include="D2BlockLogitechLCD.h">
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(QTDIR)\bin\moc.exe;%(FullPath)</AdditionalInputs>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Moc%27ing D2BlockLogitechLCD.h...</Message>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">.\GeneratedFiles\$(ConfigurationName)\moc_%(Filename).cpp</Outputs>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">"$(QTDIR)\bin\moc.exe"  "%(FullPath)" -o ".\GeneratedFiles\$(ConfigurationName)\moc_%(Filename).cpp" "-fStdAfx.h" "-f../../D2BlockLogitechLCD.h"  -DWIN32 -DQT_LARGEFILE_SUPPORT -DQT_CORE_LIB -DQT_GUI_LIB "-I." "-I.\h" "-I.\GeneratedFiles" "-I$(QTDIR)\include" "-I.\GeneratedFiles\$(ConfigurationName)\." "-I$(QTDIR)\include\QtCore" "-I$(QTDIR)\include\QtGui" "-I." "-I." "-I." "-I."</Command>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(QTDIR)\bin\moc.exe;%(FullPath)</AdditionalInputs>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Moc%27ing D2BlockLogitechLCD.h...</Message>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">.\GeneratedFiles\$(ConfigurationName)\moc_%(Filename).cpp</Outputs>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">"$(QTDIR)\bin\moc.exe"  "%(FullPath)" -o ".\GeneratedFiles\$(ConfigurationName)\moc_%(Filename).cpp" "-fStdAfx.h" "-f../../D2BlockLogitechLCD.h"  -DWIN32 -DQT_LARGEFILE_SUPPORT -DQT_NO_DEBUG -DNDEBUG -DQT_CORE_LIB -DQT_GUI_LIB "-I." "-I.\GeneratedFiles" "-I$(QTDIR)\include" "-I.\GeneratedFiles\$(ConfigurationName)\." "-I$(QTDIR)\include\QtCore" "-I$(QTDIR)\include\QtGui" "-I." "-I." "-I." "-I."</Command>
+    </CustomBuild>
     <ClInclude Include="GeneratedFiles\ui_d2block.h" />
     <CustomBuild Include="h\D2BlockSettings.h">
       <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(QTDIR)\bin\moc.exe;%(FullPath)</AdditionalInputs>

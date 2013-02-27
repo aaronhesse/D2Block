@@ -46,7 +46,7 @@ void D2BlockApplication::ConfigureSettings()
 
 void D2BlockApplication::on_updateComplete()
 {
-    emit setProgressBar(100);
+	emit setProgressBar(100);
     LaunchLaunchTarget();
     exit();
 }

@@ -7,6 +7,7 @@ D2BlockWindow::D2BlockWindow(QWidget *parent, Qt::WFlags flags):
     m_menu(new QMenu()),
     m_setGameInstallPathAction(new QAction("Set Diablo II InstallPath", this))
 {
+	setWindowIcon(QIcon("resources/d2block.ico"));
     setWindowFlags(Qt::CustomizeWindowHint | Qt::WindowCloseButtonHint);
     ui.setupUi(this);
     ui.progressBar->setValue(0);
@@ -33,7 +34,7 @@ void D2BlockWindow::show()
 void D2BlockWindow::on_chooseGameInstallPath()
 {
     QString chosenDirectory;
-    QFileDialog directoryDialog(this);
+    QFileDialog directoryDialog(this); 
     directoryDialog.setFileMode(QFileDialog::Directory);
     directoryDialog.setOption(QFileDialog::ShowDirsOnly, true);
 

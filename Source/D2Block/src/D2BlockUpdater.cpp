@@ -19,7 +19,7 @@ D2BlockUpdater::~D2BlockUpdater()
 
 void D2BlockUpdater::UpdateIgnoreList()
 {
-    emit setProgressTitle(tr("Updating Diablo II Ignorelist.."));
+    emit setProgressTitle(tr("Updating Diablo II Ignorelist..."));
     emit showProgressBar();
 
     ProcessRegistryInformation();
