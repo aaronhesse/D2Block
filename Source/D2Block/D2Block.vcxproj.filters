@@ -170,7 +170,7 @@
     <ClCompile Include="..\Logitech\LCDSDK\Src\LCDUI\LCDText.cpp">
       <Filter>Shared\LCDUI\src</Filter>
     </ClCompile>
-    <ClCompile Include="D2BlockLogitechLCD.cpp">
+    <ClCompile Include="src\D2BlockLogitechLCD.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="GeneratedFiles\Debug\moc_D2BlockLogitechLCD.cpp">
@@ -285,7 +285,7 @@
     <CustomBuild Include="h\D2BlockSettings.h">
       <Filter>Header Files</Filter>
     </CustomBuild>
-    <CustomBuild Include="D2BlockLogitechLCD.h">
+    <CustomBuild Include="h\D2BlockLogitechLCD.h">
       <Filter>Header Files</Filter>
     </CustomBuild>
   </ItemGroup>
